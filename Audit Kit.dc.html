@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F2F6FD;color:#1A1A1A;font-family:'Albert Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#024AD8;text-decoration:none}a:hover{color:#103FB2;text-decoration:underline}
+</style>
+</helmet>
+<div style="max-width:2300px;margin:0 auto;padding:0 clamp(20px,3vw,56px) 80px">
+  <nav style="display:flex;align-items:center;gap:24px;height:64px;border-bottom:1px solid #E4EEFA;flex-wrap:wrap">
+    <a href="Start Here.dc.html" style="display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;color:#1A1A1A">
+      <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#3363D2"></span>
+      <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#D07B48;margin-left:-6px"></span>
+      <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#10918C;margin-left:-6px"></span>
+      <span style="margin-left:4px">Data Viz Colors</span>
+    </a>
+    <div style="display:flex;gap:20px;font-size:14px;font-weight:500;flex-wrap:wrap">
+      <a href="Start Here.dc.html" style="color:#525252;padding:22px 0">Start here</a>
+      <a href="Guidelines.dc.html" style="color:#525252;padding:22px 0">Guidelines</a>
+      <a href="Palettes.dc.html" style="color:#525252;padding:22px 0">Palettes</a>
+      <a href="Chart Gallery.dc.html" style="color:#525252;padding:22px 0">Chart gallery</a>
+      <a href="Audit Kit.dc.html" style="color:#1A1A1A;border-bottom:2px solid #024AD8;padding:22px 0">Audit kit</a>
+      <a href="Swatch Sheet.dc.html" style="color:#525252;padding:22px 0">Swatch sheet</a>
+    </div>
+  </nav>
+
+  <header style="padding:48px 0 16px;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:40px;align-items:end">
+    <div>
+      <div style="font-size:13px;font-weight:600;color:#024AD8;letter-spacing:.04em;text-transform:uppercase">Audit kit · step 4 of the path</div>
+      <h1 style="font-size:40px;line-height:1.1;margin:10px 0 14px;font-weight:700;letter-spacing:-.01em;text-wrap:pretty">Review every chart once, then keep it consistent.</h1>
+      <p style="font-size:16px;line-height:1.55;color:#525252;margin:0;text-wrap:pretty">An end-to-end review of the charts already in the product: log them, compare them against a single metric registry, fix the ones where color says the wrong thing, and add checks so new charts arrive correct.</p>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;font-size:13px;font-weight:600">
+      <a href="#process" style="padding:6px 12px;border-radius:999px;background:#fff;border:1px solid #C9E0FC">Process</a>
+      <a href="#tree" style="padding:6px 12px;border-radius:999px;background:#fff;border:1px solid #C9E0FC">Which chart?</a>
+      <a href="#checklist" style="padding:6px 12px;border-radius:999px;background:#fff;border:1px solid #C9E0FC">Checklist</a>
+      <a href="#registry" style="padding:6px 12px;border-radius:999px;background:#fff;border:1px solid #C9E0FC">Metric registry</a>
+      <a href="#fixes" style="padding:6px 12px;border-radius:999px;background:#fff;border:1px solid #C9E0FC">Before / after</a>
+    </div>
+  </header>
+
+  <section id="process" style="margin-top:32px">
+    <h2 style="font-size:24px;margin:0 0 6px;font-weight:700">1 · The review, end to end</h2>
+    <p style="margin:0 0 18px;color:#525252;font-size:15px;line-height:1.5;max-width:780px;text-wrap:pretty">Five phases. Each one has a single output and a clear exit condition, so the review can be split across teams without losing track.</p>
+    <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px">
+      <sc-for list="{{ phases }}" as="p" hint-placeholder-count="5">
+        <div style="background:#fff;border:1px solid #E4EEFA;border-radius:14px;padding:18px;display:grid;gap:10px;align-content:start">
+          <div style="font-size:12px;font-weight:700;color:#024AD8">PHASE {{ p.n }}</div>
+          <div style="font-weight:700;font-size:16px;line-height:1.25">{{ p.title }}</div>
+          <div style="font-size:13px;line-height:1.5;color:#3D3D3D;text-wrap:pretty">{{ p.body }}</div>
+          <div style="border-top:1px solid #F0F0F0;padding-top:10px;display:grid;gap:6px;font-size:12.5px;line-height:1.45">
+            <div><span style="color:#636363">Output</span><br><b>{{ p.out }}</b></div>
+            <div><span style="color:#636363">Done when</span><br>{{ p.exit }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="margin-top:12px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px">
+      <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:14px 16px;font-size:13px;line-height:1.5;color:#3D3D3D"><span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;background:#FFE5E0;color:#921A19">BLOCKER</span><div style="margin-top:8px">The color tells the reader something false: status colors on plain categories, the same category in different colors on different dashboards, or red used for an improvement. <b>Fix before release.</b></div></div>
+      <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:14px 16px;font-size:13px;line-height:1.5;color:#3D3D3D"><span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;background:#FFE9D9;color:#602700">MAJOR</span><div style="margin-top:8px">The chart is correct but hard to read or will drift over time: too many categories, hard-coded hex values, a legend out of order, or broken in dark mode. <b>Fix in the next sprint.</b></div></div>
+      <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:14px 16px;font-size:13px;line-height:1.5;color:#3D3D3D"><span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;background:#F0F0F0;color:#3D3D3D">MINOR</span><div style="margin-top:8px">Polish: label contrast, missing markers, or “Other” not using categorical 10. <b>Fix whenever the chart is next edited.</b></div></div>
+    </div>
+  </section>
+
+  <section id="tree" style="margin-top:56px">
+    <h2 style="font-size:24px;margin:0 0 6px;font-weight:700">2 · Which chart?</h2>
+    <p style="margin:0 0 18px;color:#525252;font-size:15px;line-height:1.5;max-width:780px;text-wrap:pretty">Follow the flow from left to right: what the reader should see, then the detail, then the chart. Click any branch to see its limit and the palettes that fit. First write down, in one sentence, the question the chart answers. If you need two sentences, you need two charts.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start">
+      <div style="flex:1 1 820px;min-width:0;background:#fff;border:1px solid #E4EEFA;border-radius:14px;padding:18px;overflow-x:auto">
+        <div style="min-width:640px;display:grid;grid-template-columns:118px 14px minmax(0,1fr);align-items:start">
+          <div style="margin-top:28px;background:#1A1A1A;color:#fff;border-radius:12px;padding:12px 14px;display:grid;gap:6px">
+            <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:#A3A3A3">START</div>
+            <div style="font-weight:700;font-size:15px;line-height:1.3">What should the reader see?</div>
+          </div>
+          <div style="margin-top:58px;border-top:2px solid #024AD8"></div>
+          <div style="display:grid">
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr) 132px;gap:0 14px;padding:0 0 8px 14px;font-size:11px;font-weight:700;letter-spacing:.06em;color:#636363">
+              <div>GOAL</div><div style="padding-left:14px">DETAIL</div><div style="padding-left:14px">CHART</div>
+            </div>
+            <sc-for list="{{ goals }}" as="g" hint-placeholder-count="6">
+              <div style="position:relative;padding:5px 0 5px 14px;display:grid;grid-template-columns:minmax(0,1fr) 14px minmax(0,1.25fr) 14px 132px;align-items:center">
+                <div style="position:absolute;left:0;top:0;height:50%;border-left:2px solid {{ g.upC }}"></div>
+                <div style="position:absolute;left:0;top:50%;bottom:0;border-left:2px solid {{ g.loC }};display: {{ g.loD }}"></div>
+                <div style="position:absolute;left:0;top:50%;width:14px;border-top:2px solid {{ g.line }}"></div>
+                <button onClick="{{ g.pick }}" style="border-radius:10px;padding:8px 10px;font:inherit;text-align:left;cursor:pointer;display:grid;gap:2px;background: {{ g.bg }};border:1.5px solid {{ g.border }}" style-hover="border-color:#024AD8">
+                  <span style="font-weight:700;font-size:13.5px;line-height:1.3;color:#1A1A1A">{{ g.label }}</span>
+                  <span style="font-size:11.5px;line-height:1.35;color:#636363">{{ g.hint }}</span>
+                </button>
+                <div style="border-top:2px solid {{ g.line }}"></div>
+                <div style="grid-column:3 / span 3;display:grid">
+                  <sc-for list="{{ g.leaves }}" as="l" hint-placeholder-count="2">
+                    <div style="position:relative;padding:4px 0 4px 14px;display:grid;grid-template-columns:minmax(0,1fr) 14px 132px;align-items:center">
+                      <div style="position:absolute;left:0;top:0;height:50%;border-left:2px solid {{ l.upC }};display: {{ l.upD }}"></div>
+                      <div style="position:absolute;left:0;top:50%;bottom:0;border-left:2px solid {{ l.loC }};display: {{ l.loD }}"></div>
+                      <div style="position:absolute;left:0;top:50%;width:14px;border-top:2px solid {{ l.line }}"></div>
+                      <sc-if value="{{ l.hasSub }}" hint-placeholder-val="{{ true }}">
+                        <button onClick="{{ l.pick }}" style="border-radius:10px;padding:8px 10px;font:inherit;text-align:left;cursor:pointer;display:grid;gap:2px;color:#1A1A1A;background: {{ l.subBg }};border:1.5px solid {{ l.border }}" style-hover="border-color:#024AD8">
+                          <span style="font-weight:600;font-size:13px;line-height:1.3">{{ l.sub }}</span>
+                          <span style="font-size:11.5px;line-height:1.35;color:#636363">{{ l.hint }}</span>
+                        </button>
+                      </sc-if>
+                      <sc-if value="{{ l.noSub }}" hint-placeholder-val="{{ false }}">
+                        <div style="border-top:2px dashed {{ l.line }}"></div>
+                      </sc-if>
+                      <div style="display:flex;align-items:center"><div style="flex:1;border-top:2px solid {{ l.line }}"></div><span style="width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:6px solid {{ l.line }}"></span></div>
+                      <button onClick="{{ l.pick }}" style="border-radius:10px;padding:8px 10px;font:inherit;text-align:left;cursor:pointer;display:grid;gap:2px;background: {{ l.chipBg }};border:1.5px solid {{ l.chipBorder }}" style-hover="border-color:#024AD8">
+                        <span style="font-weight:700;font-size:13.5px;line-height:1.25;color: {{ l.chipFg }}">{{ l.chart }}</span>
+                        <span style="font-size:11.5px;color: {{ l.chipSub }}">max {{ l.max }}</span>
+                      </button>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="margin-top:12px;font-size:12.5px;color:#636363">Click any detail or chart box. Its limits and palettes appear in the panel alongside, or below on narrow screens.</div>
+      </div>
+      <div ref="{{ panelRef }}" style="flex:1 1 280px;max-width:100%;background:#fff;border:1px solid #E4EEFA;border-radius:14px;padding:20px 22px;display:grid;gap:14px;align-content:start">
+        <div style="font-size:11px;font-weight:700;color:#027D4B;letter-spacing:.06em">USE</div>
+        <div style="font-size:24px;font-weight:700;letter-spacing:-.01em;line-height:1.15;margin-top:-8px">{{ result.chart }}</div>
+        <div style="font-size:13px;color:#636363">Maximum <b style="color:#1A1A1A">{{ result.max }}</b></div>
+        <div style="font-size:14px;line-height:1.5;color:#3D3D3D;text-wrap:pretty">{{ result.tip }}</div>
+        <div style="border-top:1px solid #F0F0F0;padding-top:12px;display:grid;gap:8px">
+          <div style="font-size:13px;font-weight:700">Palettes that fit</div>
+          <sc-for list="{{ result.fits }}" as="f" hint-placeholder-count="3">
+            <div style="display:flex;align-items:baseline;gap:8px;font-size:13.5px"><span style="flex:none;width:8px;height:8px;border-radius:50%;background:#027D4B"></span><span><b>{{ f.p }}</b> <span style="color:#636363">{{ f.n }}</span></span></div>
+          </sc-for>
+        </div>
+        <div style="display:grid;gap:6px">
+          <div style="font-size:13px;font-weight:700">Avoid</div>
+          <div style="font-size:13.5px;color:#921A19;line-height:1.45;text-wrap:pretty">{{ result.avoid }}</div>
+        </div>
+        <a href="Chart Gallery.dc.html" style="justify-self:start;padding:8px 14px;border-radius:999px;background:#024AD8;color:#fff;font-size:13px;font-weight:600;text-decoration:none">Preview in the gallery →</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="checklist" style="margin-top:56px">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:12px;margin-bottom:18px">
+      <div>
+        <h2 style="font-size:24px;margin:0 0 6px;font-weight:700">3 · Chart checklist</h2>
+        <p style="margin:0;color:#525252;font-size:15px;line-height:1.5;max-width:720px">Run this for every chart in the inventory and before every chart PR. Checks shared by all charts come first, then the ones for the selected chart type.</p>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#525252">Chart type
+        <select value="{{ chart }}" onChange="{{ onChart }}" style="font:inherit;font-size:13px;font-weight:600;padding:7px 10px;border:1px solid #C9E0FC;border-radius:999px;background:#fff;color:#1A1A1A;cursor:pointer">
+          <sc-for list="{{ chartOpts }}" as="o" hint-placeholder-count="10"><option value="{{ o.key }}">{{ o.label }}</option></sc-for>
+        </select>
+      </label>
+    </div>
+    <div style="background:#fff;border:1px solid #E4EEFA;border-radius:14px;overflow:hidden">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 20px;background:#F5F5F5;font-size:13px">
+        <div style="display:flex;align-items:center;gap:12px;flex:1;min-width:0">
+          <b>{{ progressText }}</b>
+          <div style="flex:1;max-width:240px;height:6px;border-radius:3px;background:#E8E8E8;overflow:hidden"><div style="height:100%;background:#027D4B;width: {{ progressPct }}"></div></div>
+        </div>
+        <button onClick="{{ resetChecks }}" style="border:0;background:transparent;font:inherit;font-size:13px;font-weight:600;color:#024AD8;cursor:pointer">Clear</button>
+      </div>
+      <sc-for list="{{ checks }}" as="c" hint-placeholder-count="14">
+        <sc-if value="{{ c.isHead }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:14px 20px 6px;font-size:12px;font-weight:700;color:#525252;letter-spacing:.04em;border-top:1px solid #F0F0F0">{{ c.text }}</div>
+        </sc-if>
+        <sc-if value="{{ c.isItem }}" hint-placeholder-val="{{ true }}">
+          <label style="display:grid;grid-template-columns:20px minmax(0,1fr) 80px;gap:12px;padding:10px 20px;align-items:start;cursor:pointer;font-size:14px;line-height:1.45" style-hover="background:#F7FAFE">
+            <input type="checkbox" checked="{{ c.checked }}" onChange="{{ c.toggle }}" style="margin:3px 0 0;width:16px;height:16px;accent-color:#027D4B">
+            <span style="color: {{ c.fg }};text-wrap:pretty">{{ c.text }}</span>
+            <span style="justify-self:end;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;background: {{ c.sevBg }};color: {{ c.sevFg }}">{{ c.sev }}</span>
+          </label>
+        </sc-if>
+      </sc-for>
+    </div>
+  </section>
+
+  <section id="registry" style="margin-top:56px">
+    <h2 style="font-size:24px;margin:0 0 6px;font-weight:700">4 · Metric registry</h2>
+    <p style="margin:0 0 18px;color:#525252;font-size:15px;line-height:1.5;max-width:780px;text-wrap:pretty">This is where consistency comes from. Each metric is defined once, with its chart type, palette and the exact token for each value. Every dashboard showing that metric reads from this entry, so Windows is the same blue everywhere and Critical is always the same red.</p>
+    <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.4fr);gap:14px;align-items:start">
+      <div style="display:grid;gap:10px">
+        <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px;font-size:13.5px;line-height:1.55;color:#3D3D3D;display:grid;gap:8px">
+          <b style="color:#1A1A1A;font-size:15px">Rules</b>
+          <div>1. No chart ships without a registry entry for its metric.</div>
+          <div>2. A color key is permanent. A category keeps its color even when it is filtered out, so the others do not shift.</div>
+          <div>3. The sort order is part of the entry. States sort by severity, never by value.</div>
+          <div>4. Diverging entries must name the midpoint.</div>
+        </div>
+        <a href="audit/metric-registry.csv" download="metric-registry.csv" style="display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid #C9E0FC;border-radius:12px;padding:12px 16px;font-size:14px;font-weight:600;text-decoration:none">metric-registry.csv <span>↓</span></a>
+        <a href="audit/dashboard-inventory.csv" download="dashboard-inventory.csv" style="display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid #C9E0FC;border-radius:12px;padding:12px 16px;font-size:14px;font-weight:600;text-decoration:none">dashboard-inventory.csv <span>↓</span></a>
+        <div style="font-size:12.5px;color:#636363;line-height:1.5">Both files are seeded with example rows. Replace them with your own data, and keep the column names so the files can be checked automatically later.</div>
+      </div>
+      <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;overflow:hidden;font-size:13px">
+        <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.8fr) minmax(0,.9fr) minmax(0,.8fr) minmax(0,2.2fr);gap:12px;padding:10px 16px;background:#F5F5F5;font-size:12px;font-weight:600;color:#525252">
+          <div>Metric</div><div>Data</div><div>Chart</div><div>Palette</div><div>Color key</div>
+        </div>
+        <sc-for list="{{ registry }}" as="r" hint-placeholder-count="6">
+          <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.8fr) minmax(0,.9fr) minmax(0,.8fr) minmax(0,2.2fr);gap:12px;padding:11px 16px;border-top:1px solid #F0F0F0;align-items:start">
+            <div><b>{{ r.name }}</b><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#636363;margin-top:2px">{{ r.id }}</div></div>
+            <div style="color:#3D3D3D">{{ r.type }}</div>
+            <div style="color:#3D3D3D">{{ r.chart }}</div>
+            <div style="color:#3D3D3D">{{ r.palette }}</div>
+            <div style="display:flex;flex-wrap:wrap;gap:4px 10px">
+              <sc-for list="{{ r.keys }}" as="k" hint-placeholder-count="4">
+                <span style="display:inline-flex;align-items:center;gap:5px;font-size:12px"><span style="width:10px;height:10px;border-radius:3px;background: {{ k.hex }}"></span>{{ k.label }}</span>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section id="fixes" style="margin-top:56px">
+    <h2 style="font-size:24px;margin:0 0 6px;font-weight:700">5 · Before and after</h2>
+    <p style="margin:0 0 18px;color:#525252;font-size:15px;line-height:1.5;max-width:780px">The four problems most likely to turn up in the inventory, ordered by severity, each with its fix.</p>
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px">
+      <sc-for list="{{ fixes }}" as="f" hint-placeholder-count="4">
+        <div style="background:#fff;border:1px solid #E4EEFA;border-radius:14px;padding:20px 22px;display:grid;gap:14px;align-content:start">
+          <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start">
+            <div style="font-weight:700;font-size:16px;line-height:1.3">{{ f.title }}</div>
+            <span style="flex:none;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;background: {{ f.sevBg }};color: {{ f.sevFg }}">{{ f.sev }}</span>
+          </div>
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px">
+            <sc-for list="{{ f.sides }}" as="s" hint-placeholder-count="2">
+              <div style="display:grid;gap:10px;align-content:start;border-radius:10px;padding:12px;background: {{ s.bg }}">
+                <div style="font-size:11px;font-weight:700;letter-spacing:.04em;color: {{ s.tagFg }}">{{ s.tag }}</div>
+                <sc-for list="{{ s.rows }}" as="r" hint-placeholder-count="2">
+                  <div style="display:grid;gap:4px">
+                    <div style="font-size:11.5px;color:#525252;font-weight:600">{{ r.label }}</div>
+                    <div style="display:flex;gap:2px;height:18px">
+                      <sc-for list="{{ r.segs }}" as="g" hint-placeholder-count="4"><span title="{{ g.name }}" style="border-radius:2px;flex-grow: {{ g.w }};background: {{ g.c }}"></span></sc-for>
+                    </div>
+                  </div>
+                </sc-for>
+                <div style="display:flex;flex-wrap:wrap;gap:3px 9px">
+                  <sc-for list="{{ s.legend }}" as="l" hint-placeholder-count="3"><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:#3D3D3D"><span style="width:8px;height:8px;border-radius:2px;background: {{ l.c }}"></span>{{ l.name }}</span></sc-for>
+                </div>
+                <sc-if value="{{ s.hasKpi }}" hint-placeholder-val="{{ false }}">
+                  <div style="background:#fff;border:1px solid #E8E8E8;border-radius:8px;padding:10px 12px;display:grid;gap:2px">
+                    <div style="font-size:11.5px;color:#636363">Open alerts</div>
+                    <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:24px;font-weight:700">128</span><span style="font-size:13px;font-weight:700;color: {{ s.kpiFg }}">▼ 12%</span></div>
+                  </div>
+                </sc-if>
+                <div style="font-size:12.5px;line-height:1.45;color:#3D3D3D;text-wrap:pretty">{{ s.note }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { sel: 'line', chart: 'line', checked: {} };
+  panelRef = React.createRef();
+  static TREE = {
+    q: 'What should the reader see?', a: [
+      { label: 'How something changes over time', hint: 'Weekly alerts, CPU per hour, devices enrolled per month', next: { q: 'What is changing?', a: [
+        { label: 'A few separate series', hint: 'Up to 5 lines compared with each other', r: 'line' },
+        { label: 'One series against the rest', hint: 'This device vs. the fleet average', r: 'lineEm' },
+        { label: 'How the parts of a total change', hint: 'Devices per state, stacked over time', r: 'area' } ] } },
+      { label: 'How items compare or rank', hint: 'Top apps, devices per OS, alerts per team', next: { q: 'How many measures per item?', a: [
+        { label: 'One measure, ranked', hint: 'One bar per item, sorted', r: 'bar' },
+        { label: 'Several series per group', hint: 'Critical / high / medium per team', r: 'column' } ] } },
+      { label: 'Parts of a whole', hint: 'Share of devices by state, OS mix', next: { q: 'How many totals?', a: [
+        { label: 'One total, 5 parts or fewer', hint: 'A single composition', r: 'pie' },
+        { label: 'Compare the mix across groups', hint: 'Patch state per department', r: 'stacked' },
+        { label: 'Many parts or a hierarchy', hint: 'Devices by site → model', r: 'treemap' } ] } },
+      { label: 'How two measures relate', hint: 'CPU vs. memory per device', r: 'scatter' },
+      { label: 'A value across two dimensions', hint: 'Alerts per team × week', r: 'heatmap' },
+      { label: 'One value against a target', hint: 'Health score, compliance %', r: 'gauge' } ] };
+  static RESULTS = {
+    line: { chart: 'Line', max: '5 series', fits: [['Categorical', '≤ 5'], ['Status', '≤ 5 (states over time)'], ['Emphasis', 'any number']], avoid: 'Held palettes. Diverging unless series sit above and below a target.', tip: 'Above 4 series, add a marker shape per line. Above 5, switch to emphasis or small multiples.' },
+    lineEm: { chart: 'Line with emphasis', max: 'no limit, 1–2 highlighted', fits: [['Emphasis', 'primary + muted'], ['Emphasis', 'secondary from 3 series up']], avoid: 'Coloring every context line. The muted lines are there for context, not comparison.', tip: 'The selected entity is always primary. Put the fleet or average in muted, and label the highlighted line directly.' },
+    area: { chart: 'Area (stacked)', max: '5 layers', fits: [['Categorical', '≤ 5'], ['Status', '≤ 5'], ['Sequential', '≤ 5']], avoid: 'Diverging: a stack has no midpoint.', tip: 'Group thin upper layers into “Other”. If readers need to compare layers rather than the total, use lines.' },
+    bar: { chart: 'Bar (ranked)', max: '10 bars', fits: [['Status', '≤ 8, ordered by severity'], ['Sequential', '≤ 7 ordered bins'], ['Diverging', '≤ 7, signed values'], ['Emphasis', 'highlight one bar']], avoid: 'A different categorical color per bar, unless those categories use the same colors elsewhere on the page.', tip: 'One series means one color. The axis already names the bars, so color is only for meaning or emphasis.' },
+    column: { chart: 'Column (grouped)', max: '6 series per group', fits: [['Categorical', '≤ 6'], ['Status', '≤ 5'], ['Sequential', '≤ 5 bins'], ['Emphasis', 'any number']], avoid: 'More than 6 series, because columns get too thin to read.', tip: 'If readers compare the total per group, stack the columns. If they compare each series across groups, split into small multiples.' },
+    pie: { chart: 'Donut', max: '5 slices + Other', fits: [['Categorical', '≤ 5'], ['Status', '≤ 5'], ['Emphasis', '≤ 3, “share of X”']], avoid: 'Diverging and held palettes. More than 5 slices.', tip: 'Start at 12 o’clock and order by size, or by severity for states. Slices under 5% go into “Other” (categorical 10).' },
+    stacked: { chart: 'Stacked column 100%', max: '5 segments', fits: [['Categorical', '≤ 5'], ['Status', '≤ 5'], ['Sequential', '≤ 5'], ['Diverging', '≤ 5, odd count']], avoid: 'Segments under 4%, which are too thin to label.', tip: 'Keep the same segment order in every column. For states, run critical → low → healthy.' },
+    treemap: { chart: 'Treemap', max: '7 groups', fits: [['Categorical', '≤ 7'], ['Status', '≤ 5'], ['Sequential', '≤ 7 (second measure)'], ['Diverging', '≤ 7 (change)']], avoid: 'Using more colors instead of nesting.', tip: 'Size shows the count. State in the subtitle what color shows: the group, the state, or a second measure.' },
+    scatter: { chart: 'Scatter', max: '4 series', fits: [['Categorical', '≤ 4'], ['Status', '≤ 4'], ['Emphasis', 'one series vs. the rest']], avoid: 'Light sequential steps on small marks. Use point size to show a third measure instead.', tip: 'Give each series its own marker shape. Overlapping points need a 1px surface outline.' },
+    heatmap: { chart: 'Heatmap', max: '5–7 classes', fits: [['Sequential', '≤ 7 (volume)'], ['Status', '≤ 4 (state matrix)'], ['Diverging', '≤ 7 (vs. target)']], avoid: 'Categorical and emphasis: cells show a quantity, which needs ordered colors.', tip: 'Use discrete classes with the ranges shown in the legend. Five classes is the sweet spot.' },
+    gauge: { chart: 'Solid gauge', max: '3–4 bands', fits: [['Status', 'Poor / Fair / Healthy'], ['Emphasis', 'single value on the faint track']], avoid: 'Categorical: gauge bands are ordered thresholds.', tip: 'Take the band thresholds from the metric registry so the same score gets the same color on every dashboard.' },
+  };
+  static CHARTS = [['line', 'Line'], ['column', 'Column (grouped)'], ['bar', 'Bar (ranked)'], ['stacked', 'Stacked column 100%'], ['area', 'Area (stacked)'], ['pie', 'Pie / donut'], ['scatter', 'Scatter'], ['heatmap', 'Heatmap'], ['treemap', 'Treemap'], ['gauge', 'Solid gauge']];
+  static COMMON = [
+    ['Color answers one question, and the title or legend says what that question is.', 'B'],
+    ['The palette matches the data type: groups → Categorical, states → Status, amounts → Sequential, change around a midpoint → Diverging.', 'B'],
+    ['Each category or state has the same color as in the metric registry, on every dashboard.', 'B'],
+    ['Red and green only mean bad and good. They are never used for ordinary categories.', 'B'],
+    ['A change is colored by whether it is better or worse, not by its direction. Fewer alerts is green.', 'B'],
+    ['The number of categories is within the chart’s limit. Anything beyond it goes into “Other” (categorical 10).', 'M'],
+    ['Colors are set by token name through the shared theme. No hex values are hard-coded in the chart.', 'M'],
+    ['No held tokens (multihue.*, heatmap.severity-*). Severity heatmaps move to Status classes.', 'M'],
+    ['The legend and stacking order match the data: critical → low for states, low → high for bins.', 'M'],
+    ['In dark mode the chart uses the dark token set, not light hex values on a dark surface.', 'M'],
+    ['Text on a fill uses that color’s paired label token (4.5:1).', 'm'],
+    ['Color is not the only cue. Direct labels, marker shapes or patterns support it.', 'm'],
+    ['Missing data uses the hatched “No data” token, not a gap or a plain grey.', 'm'],
+  ];
+  static SPECIFIC = {
+    line: [['At most 5 lines. Beyond that, use emphasis or small multiples.', 'M'], ['With more than 4 series, each line has its own marker shape.', 'm'], ['Sequential lines use only the 4 darkest steps.', 'm']],
+    column: [['At most 6 series per group, and columns are at least ~12px wide.', 'M'], ['The series order is the same in every group.', 'm']],
+    bar: [['A single series uses a single color, unless its categories are keyed elsewhere on the page.', 'M'], ['Bars are sorted by value, unless their order has meaning (severity, bins).', 'm'], ['Values are labelled on the bars.', 'm']],
+    stacked: [['At most 5 segments. Segments under 4% are grouped.', 'M'], ['States stack critical → low → healthy. Diverging stacks use an odd count.', 'M']],
+    area: [['At most 5 layers, with a surface-colored line between layers.', 'M'], ['No diverging palette.', 'B']],
+    pie: [['At most 5 slices plus “Other”.', 'M'], ['Slices start at 12 o’clock, ordered by size or severity.', 'm'], ['No diverging palette.', 'B']],
+    scatter: [['At most 4 series, each with a distinct marker shape.', 'M'], ['A third measure is shown with point size, not light color steps.', 'm']],
+    heatmap: [['Classes use Sequential, Status or Diverging. Never Categorical.', 'B'], ['The legend shows the range of each class.', 'M'], ['Cell labels use the label token for their class.', 'm']],
+    treemap: [['At most 7 groups. Beyond that, nest the groups.', 'M'], ['The subtitle says what color encodes.', 'm']],
+    gauge: [['Bands come from Status, with the thresholds from the registry.', 'B'], ['A single-value gauge uses emphasis primary on the faint track.', 'm']],
+  };
+  toggle(id) { this.setState(s => ({ checked: { ...s.checked, [id]: !s.checked[id] } })); }
+  renderVals() {
+    const sel = this.state.sel, res = Component.RESULTS[sel], LN = '#C9E0FC', ACT = '#024AD8';
+    const gs = Component.TREE.a, gAct = gs.findIndex(g => g.next ? g.next.a.some(x => x.r === sel) : g.r === sel);
+    const pick = r => { this.setState({ sel: r }); const el = this.panelRef.current; if (el) { const t = el.getBoundingClientRect().top; if (t > window.innerHeight - 120) window.scrollTo({ top: window.scrollY + t - 80, behavior: 'smooth' }); } };
+    const goals = gs.map((g, gi) => {
+      const ls = g.next ? g.next.a.map(x => ({ sub: x.label, hint: x.hint, r: x.r, hasSub: true })) : [{ sub: '', hint: '', r: g.r, hasSub: false }];
+      const on = ls.some(x => x.r === sel);
+      const aIdx = ls.findIndex(x => x.r === sel), e = (ls.length - 1) / 2, lo = on ? Math.min(e, aIdx) : 9, hi = on ? Math.max(e, aIdx) : -9;
+      return { label: g.label, hint: g.hint, pick: () => pick(ls[0].r), upC: gi <= gAct ? ACT : LN, loC: gi < gAct ? ACT : LN, loD: gi === gs.length - 1 ? 'none' : 'block', line: on ? ACT : LN, bg: on ? '#F2F6FD' : '#fff', border: on ? ACT : '#E4EEFA',
+        leaves: ls.map((x, li) => { const act = x.r === sel, R = Component.RESULTS[x.r];
+          return { ...x, noSub: !x.hasSub, upD: li === 0 ? 'none' : 'block', loD: li === ls.length - 1 ? 'none' : 'block', upC: li - 0.5 >= lo && li <= hi ? ACT : LN, loC: li >= lo && li + 0.5 <= hi ? ACT : LN, line: act ? ACT : LN, subBg: act ? '#F2F6FD' : '#fff', border: act ? ACT : '#E4EEFA',
+            chart: R.chart, max: R.max, chipBg: act ? ACT : '#F7FAFE', chipBorder: act ? ACT : '#C9E0FC', chipFg: act ? '#fff' : '#1A1A1A', chipSub: act ? '#C9E0FC' : '#636363',
+            pick: () => pick(x.r) }; }) };
+    });
+    const SEV = { B: ['Blocker', '#FFE5E0', '#921A19'], M: ['Major', '#FFE9D9', '#602700'], m: ['Minor', '#F0F0F0', '#3D3D3D'] };
+    const chart = this.state.chart, chLabel = Component.CHARTS.find(c => c[0] === chart)[1];
+    const mk = (pre, list) => list.map(([text, s], i) => { const id = pre + i, on = !!this.state.checked[id];
+      return { isHead: false, isItem: true, text, checked: on, toggle: () => this.toggle(id), sev: SEV[s][0], sevBg: SEV[s][1], sevFg: SEV[s][2], fg: on ? '#A3A3A3' : '#1A1A1A' }; });
+    const items = [...mk('all', Component.COMMON), ...mk(chart, Component.SPECIFIC[chart])];
+    const head = t => ({ isHead: true, isItem: false, text: t });
+    const done = items.filter(i => i.checked).length;
+    const checks = [head('EVERY CHART'), ...items.slice(0, Component.COMMON.length), head(chLabel.toUpperCase()), ...items.slice(Component.COMMON.length)];
+    const C = ['#3363D2', '#D07B48', '#10918C', '#A24496', '#6F8D19', '#5921AC', '#973818', '#189ED8', '#76254A'], OTHER = '#4C5B74';
+    const S = { critical: '#9B1741', high: '#C92B28', medium: '#D86102', low: '#BA7E15', positive: '#027D4B' };
+    const seg = (w, c, name) => ({ w, c, name });
+    const before = { tag: 'BEFORE', bg: '#FFF5F3', tagFg: '#921A19', hasKpi: false }, after = { tag: 'AFTER', bg: '#F2FBF6', tagFg: '#01633A', hasKpi: false };
+    const fixes = [
+      { title: 'The same OS has a different color on each dashboard', sev: 'Blocker', sevBg: SEV.B[1], sevFg: SEV.B[2], sides: [
+        { ...before, rows: [{ label: 'Overview', segs: [seg(46, C[0], 'Windows'), seg(28, C[1], 'macOS'), seg(16, C[2], 'Linux')] }, { label: 'Inventory (sorted by count)', segs: [seg(46, C[1], 'Windows'), seg(28, C[0], 'macOS'), seg(16, C[2], 'Linux')] }],
+          legend: [], note: 'Colors were assigned by position, so re-sorting swapped Windows and macOS. Readers comparing the two dashboards get it wrong.' },
+        { ...after, rows: [{ label: 'Overview', segs: [seg(46, C[0], 'Windows'), seg(28, C[1], 'macOS'), seg(16, C[2], 'Linux')] }, { label: 'Inventory', segs: [seg(46, C[0], 'Windows'), seg(28, C[1], 'macOS'), seg(16, C[2], 'Linux')] }],
+          legend: [{ c: C[0], name: 'Windows' }, { c: C[1], name: 'macOS' }, { c: C[2], name: 'Linux' }], note: 'Colors are bound to the category through the registry color key, not to position.' } ] },
+      { title: 'Status colors used for plain categories', sev: 'Blocker', sevBg: SEV.B[1], sevFg: SEV.B[2], sides: [
+        { ...before, rows: [{ label: 'Windows', segs: [seg(46, S.positive, 'Windows')] }, { label: 'macOS', segs: [seg(28, S.high, 'macOS')] }, { label: 'Linux', segs: [seg(16, S.medium, 'Linux')] }],
+          legend: [], note: 'macOS in red reads as “there is a problem with macOS”. The data only says it has fewer devices.' },
+        { ...after, rows: [{ label: 'Windows', segs: [seg(46, C[0], 'Windows')] }, { label: 'macOS', segs: [seg(28, C[0], 'macOS')] }, { label: 'Linux', segs: [seg(16, C[0], 'Linux')] }],
+          legend: [], note: 'A single series gets a single color. Save red for the charts where something is actually wrong.' } ] },
+      { title: 'An improvement shown in red', sev: 'Blocker', sevBg: SEV.B[1], sevFg: SEV.B[2], sides: [
+        { ...before, rows: [], legend: [], hasKpi: true, kpiFg: S.high, note: 'Alerts went down, which is good news, but the red arrow makes it look like an incident.' },
+        { ...after, rows: [], legend: [], hasKpi: true, kpiFg: S.positive, note: 'Color shows better or worse, and the arrow shows up or down. The registry sets the “good direction” for each metric.' } ] },
+      { title: 'Too many slices in one composition', sev: 'Major', sevBg: SEV.M[1], sevFg: SEV.M[2], sides: [
+        { ...before, rows: [{ label: 'Devices by model (9 parts)', segs: [34, 22, 15, 10, 7, 5, 3, 2, 2].map((w, i) => seg(w, C[i], 'Model ' + (i + 1))) }],
+          legend: [], note: 'Nine hues. The four smallest slices cannot be labelled or told apart.' },
+        { ...after, rows: [{ label: 'Devices by model (5 + Other)', segs: [seg(34, C[0], 'A'), seg(22, C[1], 'B'), seg(15, C[2], 'C'), seg(10, C[3], 'D'), seg(7, C[4], 'E'), seg(12, OTHER, 'Other')] }],
+          legend: [{ c: C[0], name: 'Top 5' }, { c: OTHER, name: 'Other (categorical 10)' }], note: 'Keep the five largest and put the rest into “Other”, which always uses categorical 10.' } ] },
+    ];
+    const RC = { 'categorical.01': C[0], 'categorical.02': C[1], 'categorical.03': C[2], 'categorical.04': C[3], 'categorical.05': C[4], 'categorical.10': OTHER, 'status.critical': S.critical, 'status.high': S.high, 'status.medium': S.medium, 'status.low': S.low, 'status.positive': S.positive, 'status.neutral': '#858585', 'emphasis.primary': '#3363D2', 'emphasis.muted': '#858585', 'seq.1': '#E0ECFE', 'seq.3': '#5492EC', 'seq.5': '#003E8C' };
+    const reg = (name, id, type, chart, palette, keys) => ({ name, id, type, chart, palette, keys: keys.map(([label, t]) => ({ label, hex: RC[t] })) });
+    const registry = [
+      reg('Devices by OS', 'devices_by_os', 'Categorical', 'Bar', 'Categorical', [['Windows', 'categorical.01'], ['macOS', 'categorical.02'], ['Linux', 'categorical.03'], ['iOS', 'categorical.04'], ['Android', 'categorical.05'], ['Other', 'categorical.10']]),
+      reg('Alerts by severity', 'alerts_by_severity', 'State', 'Stacked column', 'Status', [['Critical', 'status.critical'], ['High', 'status.high'], ['Medium', 'status.medium'], ['Low', 'status.low']]),
+      reg('Patch compliance', 'patch_compliance', 'State', 'Stacked 100%', 'Status', [['Compliant', 'status.positive'], ['Pending', 'status.medium'], ['Failed', 'status.high'], ['N/A', 'status.neutral']]),
+      reg('Device health score', 'device_health_score', 'Score', 'Solid gauge', 'Status', [['0–49', 'status.high'], ['50–79', 'status.medium'], ['80–100', 'status.positive']]),
+      reg('CPU utilization', 'cpu_utilization', 'Amount', 'Line', 'Emphasis', [['Selected device', 'emphasis.primary'], ['Fleet average', 'emphasis.muted']]),
+      reg('Disk usage bins', 'disk_usage_bins', 'Ordered bins', 'Column', 'Sequential', [['<50%', 'seq.1'], ['70–85%', 'seq.3'], ['>95%', 'seq.5']]),
+    ];
+    const phases = [
+      { n: 1, title: 'Inventory', body: 'Go through every dashboard and log one row per chart: its metric, chart type, palette, number of categories, and whether its colors are hard-coded.', out: 'dashboard-inventory.csv', exit: 'Every dashboard has been walked through, and product owners have confirmed the list.' },
+      { n: 2, title: 'Define metrics', body: 'Group the rows by metric. Where the same metric appears on several dashboards, agree on one chart type, palette, color key and sort order.', out: 'metric-registry.csv', exit: 'Every inventory row points to a metric_id.' },
+      { n: 3, title: 'Review', body: 'Run the checklist on each chart. Compare it with its registry entry and log the issues with a severity.', out: 'Issues column filled in', exit: 'Every row has a status of pass, or a logged issue.' },
+      { n: 4, title: 'Fix', body: 'Fix all blockers first, then majors. Change colors by moving the chart onto the shared theme and the registry key, never by patching hex values.', out: 'Chart PRs', exit: 'There are zero open blockers, and every major has an owner and a sprint.' },
+      { n: 5, title: 'Prevent', body: 'Add the checklist to the PR template. Require a registry entry for any new chart, and re-audit each quarter.', out: 'PR template and owners', exit: 'The next new chart is merged with a registry link.' },
+    ];
+    return {
+      phases, goals, result: { ...res, fits: res.fits.map(([p, n]) => ({ p, n })) },
+      chart, chartOpts: Component.CHARTS.map(([key, label]) => ({ key, label })), onChart: e => this.setState({ chart: e.target.value }),
+      checks, progressText: done + ' of ' + items.length + ' checked', progressPct: Math.round(done / items.length * 100) + '%',
+      resetChecks: () => this.setState({ checked: {} }), registry, fixes,
+    };
+  }
+}
+</script>
+</body>
+</html>

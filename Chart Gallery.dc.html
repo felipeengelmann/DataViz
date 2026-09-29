@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F2F6FD;color:#1A1A1A;font-family:'Albert Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#024AD8;text-decoration:none}a:hover{color:#103FB2;text-decoration:underline}
+</style>
+</helmet>
+<div style="max-width:2300px;margin:0 auto;padding:0 clamp(20px,3vw,56px) 80px">
+  <nav style="display:flex;align-items:center;gap:24px;min-height:64px;border-bottom:1px solid #E4EEFA;flex-wrap:wrap">
+    <a href="Start Here.dc.html" style="display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;color:#1A1A1A;text-decoration:none">
+      <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#3363D2"></span>
+      <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#D07B48;margin-left:-6px"></span>
+      <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#10918C;margin-left:-6px"></span>
+      <span style="margin-left:4px">Data Viz Colors</span>
+    </a>
+    <div style="display:flex;gap:20px;font-size:14px;font-weight:500;flex-wrap:wrap">
+      <a href="Start Here.dc.html" style="color:#525252;padding:22px 0">Start here</a>
+      <a href="Guidelines.dc.html" style="color:#525252;padding:22px 0">Guidelines</a>
+      <a href="Palettes.dc.html" style="color:#525252;padding:22px 0">Palettes</a>
+      <a href="Chart Gallery.dc.html" style="color:#1A1A1A;border-bottom:2px solid #024AD8;padding:22px 0">Chart gallery</a>
+      <a href="Audit Kit.dc.html" style="color:#525252;padding:22px 0">Audit kit</a>
+      <a href="Swatch Sheet.dc.html" style="color:#525252;padding:22px 0">Swatch sheet</a>
+    </div>
+  </nav>
+
+  <header style="padding:40px 0 20px;max-width:820px">
+    <div style="font-size:13px;font-weight:600;color:#024AD8;letter-spacing:.04em;text-transform:uppercase">Chart gallery · Highcharts</div>
+    <h1 style="font-size:36px;line-height:1.1;margin:10px 0 12px;font-weight:700;letter-spacing:-.01em;text-wrap:pretty">The ten most-used chart types, under any palette and any number of categories.</h1>
+    <p style="font-size:15px;line-height:1.55;color:#525252;margin:0;text-wrap:pretty">Set a palette and a count for the whole gallery, or override them on any single card to compare one chart across palettes. Each card grades its combination — recommended, use with care, or not recommended — and explains why. The strip under each chart swaps that card only, showing the category ceiling per palette.</p>
+  </header>
+
+  <div style="position:sticky;top:0;z-index:5;background:#F2F6FD;padding:14px 0 12px;border-bottom:1px solid #E4EEFA;display:grid;gap:12px">
+    <div style="display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:12px;font-weight:600;color:#525252">Palette</span>
+        <div style="display:flex;border:1px solid #C9E0FC;border-radius:999px;padding:2px;background:#fff;flex-wrap:wrap">
+          <sc-for list="{{ paletteBtns }}" as="b" hint-placeholder-count="7">
+            <button onClick="{{ b.onClick }}" style="border:0;border-radius:999px;padding:6px 12px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;background: {{ b.bg }};color: {{ b.fg }}">{{ b.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:12px;font-weight:600;color:#525252">Categories</span>
+        <select value="{{ n }}" onChange="{{ onGlobalN }}" style="font:inherit;font-size:13px;font-weight:600;padding:6px 10px;border:1px solid #C9E0FC;border-radius:999px;background:#fff;color:#1A1A1A;cursor:pointer">
+          <sc-for list="{{ countOpts }}" as="o" hint-placeholder-count="10"><option value="{{ o.v }}">{{ o.label }}</option></sc-for>
+        </select>
+      </label>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:12px;font-weight:600;color:#525252">Mode</span>
+        <div style="display:flex;border:1px solid #C9E0FC;border-radius:999px;padding:2px;background:#fff">
+          <button onClick="{{ setLight }}" style="border:0;border-radius:999px;padding:6px 14px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;background: {{ lightBtnBg }};color: {{ lightBtnFg }}">Light</button>
+          <button onClick="{{ setDark }}" style="border:0;border-radius:999px;padding:6px 14px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;background: {{ darkBtnBg }};color: {{ darkBtnFg }}">Dark</button>
+        </div>
+      </div>
+      <sc-if value="{{ hasOverrides }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ resetAll }}" style="margin-left:auto;border:1px solid #C9E0FC;border-radius:999px;padding:6px 12px;font:inherit;font-size:12px;font-weight:600;cursor:pointer;background:#fff;color:#024AD8">{{ resetAllText }}</button>
+      </sc-if>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center">
+      <div style="font-size:13px;color:#3D3D3D;max-width:520px;line-height:1.45">{{ paletteDesc }}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin-left:auto">
+        <sc-for list="{{ sel }}" as="s" hint-placeholder-count="5">
+          <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#3D3D3D">
+            <span style="width:14px;height:14px;border-radius:4px;background: {{ s.hex }};border:1px solid #E4EEFA"></span>
+            <span style="font-weight:600">{{ s.label }}</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#636363">{{ s.hex }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <sc-if value="{{ hasCapNotice }}" hint-placeholder-val="{{ false }}">
+      <div style="font-size:13px;color:#602700;background:#FFE9D9;border-radius:8px;padding:8px 12px;justify-self:start">{{ capNotice }}</div>
+    </sc-if>
+  </div>
+
+  <div style="background: {{ page }};border-radius:18px;padding:20px;margin-top:20px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;border:1px solid #E4EEFA">
+    <sc-for list="{{ cards }}" as="c" hint-placeholder-count="10">
+      <div style="background: {{ card }};border-radius:14px;padding:18px 20px 14px;color: {{ ink }};display:grid;gap:10px;align-content:start;min-width:0">
+        <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start">
+          <div style="min-width:0">
+            <h3 style="margin:0;font-size:16px;font-weight:600">{{ c.title }}</h3>
+            <div style="font-size:12px;color: {{ muted }};margin-top:2px">{{ c.unitText }}</div>
+          </div>
+          <span style="flex:none;font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;background: {{ c.badgeBg }};color: {{ c.badgeFg }};white-space:nowrap">{{ c.badge }}</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;font-size:12px;color: {{ muted }}">
+          <select value="{{ c.palette }}" onChange="{{ c.onPalette }}" aria-label="Palette for this chart" style="font:inherit;font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px;cursor:pointer;background: {{ card }};color: {{ ink }};border:1px solid {{ c.palBorder }}">
+            <sc-for list="{{ palOpts }}" as="o" hint-placeholder-count="7"><option value="{{ o.key }}">{{ o.label }}</option></sc-for>
+          </select>
+          <select value="{{ c.n }}" onChange="{{ c.onN }}" aria-label="Categories for this chart" style="font:inherit;font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px;cursor:pointer;background: {{ card }};color: {{ ink }};border:1px solid {{ c.nBorder }}">
+            <sc-for list="{{ countOpts }}" as="o" hint-placeholder-count="10"><option value="{{ o.v }}">{{ o.label }}</option></sc-for>
+          </select>
+          <sc-if value="{{ c.isLocal }}" hint-placeholder-val="{{ false }}">
+            <span style="display:flex;align-items:center;gap:6px">
+              <span style="font-weight:600;color:#3363D2">Local override</span>
+              <button onClick="{{ c.reset }}" style="border:0;background:transparent;padding:2px 4px;font:inherit;font-size:12px;font-weight:600;cursor:pointer;color: {{ muted }};text-decoration:underline">Use global</button>
+            </span>
+          </sc-if>
+        </div>
+        <div ref="{{ c.ref }}" style="height:240px"></div>
+        <sc-if value="{{ c.noWhy }}" hint-placeholder-val="{{ true }}">
+          <div style="font-size:12.5px;line-height:1.45;color: {{ muted }};min-height:36px">{{ c.note }}</div>
+        </sc-if>
+        <sc-if value="{{ c.hasWhy }}" hint-placeholder-val="{{ false }}">
+          <div style="border-radius:10px;padding:10px 12px;display:grid;gap:6px;font-size:12.5px;line-height:1.45;background: {{ c.whyBg }};color: {{ c.whyFg }}">
+            <div style="font-weight:700">{{ c.whyTitle }}</div>
+            <sc-for list="{{ c.reasons }}" as="r" hint-placeholder-count="2">
+              <div style="display:grid;grid-template-columns:10px minmax(0,1fr);gap:6px;text-wrap:pretty"><span>·</span><span>{{ r.text }}</span></div>
+            </sc-for>
+            <div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:2px">
+              <span style="font-weight:600">Try</span>
+              <sc-for list="{{ c.tries }}" as="x" hint-placeholder-count="2">
+                <button onClick="{{ x.onClick }}" style="border:1px solid currentColor;border-radius:999px;padding:2px 9px;font:inherit;font-size:11.5px;font-weight:600;cursor:pointer;background:transparent;color: {{ c.whyFg }}">{{ x.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+        <div style="display:flex;flex-wrap:wrap;gap:4px;border-top:1px solid {{ line }};padding-top:10px">
+          <sc-for list="{{ c.fits }}" as="f" hint-placeholder-count="7">
+            <button onClick="{{ f.onClick }}" title="{{ f.title }}" style="display:inline-flex;align-items:center;gap:5px;border-radius:6px;padding:3px 7px;font:inherit;font-size:11px;font-weight:600;cursor:pointer;background: {{ f.bg }};border:1px solid {{ f.border }};color: {{ ink }}">
+              <span style="width:7px;height:7px;border-radius:50%;background: {{ f.dot }}"></span>{{ f.short }}<span style="font-weight:500;color: {{ muted }}">{{ f.maxText }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <section style="margin-top:40px">
+    <h2 style="font-size:22px;margin:0 0 6px;font-weight:700">Fit matrix</h2>
+    <p style="margin:0 0 16px;color:#525252;font-size:14px;line-height:1.5;max-width:760px;text-wrap:pretty">Ceilings are for the number of colors a reader can still tell apart in that chart type — they are stricter than the palette’s own size. Green: recommended. Amber: works with the caveat on the card. Red: pick another palette. The two held palettes are shown for reference only and aren't used for new charts.</p>
+    <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;overflow:hidden;font-size:13px">
+      <div style="display:grid;grid-template-columns:1.3fr repeat(7,minmax(0,1fr));gap:8px;padding:10px 18px;background:#F5F5F5;font-size:12px;font-weight:600;color:#525252">
+        <div>Chart · N means</div>
+        <sc-for list="{{ matrixHead }}" as="h" hint-placeholder-count="7"><div>{{ h.label }}</div></sc-for>
+      </div>
+      <sc-for list="{{ matrix }}" as="r" hint-placeholder-count="10">
+        <div style="display:grid;grid-template-columns:1.3fr repeat(7,minmax(0,1fr));gap:8px;padding:9px 18px;border-top:1px solid #F0F0F0;align-items:center">
+          <div><b>{{ r.title }}</b> <span style="color:#636363">· {{ r.unit }}</span></div>
+          <sc-for list="{{ r.cells }}" as="x" hint-placeholder-count="7">
+            <div style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background: {{ x.dot }}"></span><span style="color: {{ x.fg }}">{{ x.text }}</span></div>
+          </sc-for>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="margin-top:28px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;font-size:14px;line-height:1.5;color:#3D3D3D">
+    <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px"><b style="color:#1A1A1A">Status picks a ladder, not a slice.</b> Two states are Healthy / Poor, three add Fair, four are the severity scale critical → low, five to eight add Healthy, Not applicable, No data (hatched) and Informational. Nine or more states cannot be encoded by color.</div>
+    <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px"><b style="color:#1A1A1A">Ramps are sampled evenly.</b> Five sequential steps use the designed 5-step ramp; other counts sample the 7-step ramp so ends stay dark and light. Even diverging counts drop the neutral midpoint — use odd counts when “on target” is a real state.</div>
+    <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px"><b style="color:#1A1A1A">Value-mapped charts reverse status.</b> On the heatmap a higher value is worse, so classes run Healthy → Critical; on the gauge a higher score is better, so bands run Critical → Healthy. Developers bind by key; the order is a chart decision.</div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;mode&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;'light' | 'dark'&quot;,&quot;section&quot;:&quot;Demo&quot;},&quot;palette&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;categorical&quot;,&quot;status&quot;,&quot;sequential&quot;,&quot;diverging&quot;,&quot;multihue&quot;,&quot;heat&quot;,&quot;emphasis&quot;],&quot;default&quot;:&quot;categorical&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Demo&quot;},&quot;categories&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:5,&quot;min&quot;:1,&quot;max&quot;:10,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Demo&quot;}}">
+class Component extends DCLogic {
+  static PALETTES = [
+    { key: 'categorical', label: 'Categorical', short: 'Cat', cap: 10, capWord: 'colors', role: 'Categorical hues are distinct but unordered — nothing in them reads as “more”, “less” or “worse”.', desc: 'Unordered groups. Colors are used in order 1 → N; stop at 5–7 and put the tail in “Other” (color 10).' },
+    { key: 'status', label: 'Status', short: 'Status', cap: 8, capWord: 'states', role: 'Status colors carry fixed meanings (critical, healthy…) — use them only when the data are real states.', desc: 'States with meaning. N picks a ladder: 2 = Healthy / Poor, 3 adds Fair, 4 = Critical → Low, 5–8 add Healthy, Not applicable, No data, Informational.' },
+    { key: 'sequential', label: 'Sequential', short: 'Seq', cap: 7, capWord: 'steps', role: 'Sequential steps encode order in one hue: light is low, dark is high. Light steps lose contrast on thin marks.', desc: 'One quantity, low → high, in brand blue. N steps are sampled from the 7-step ramp; 5 uses the designed 5-step ramp.' },
+    { key: 'diverging', label: 'Diverging', short: 'Div', cap: 7, capWord: 'steps', role: 'Diverging colors promise a meaningful midpoint with two directions away from it; without one they mislead.', desc: 'A value around a neutral midpoint, blue ↔ copper. Odd N keeps the midpoint; even N drops it.' },
+    { key: 'multihue', held: true, label: 'Multi-hue', short: 'Multi', cap: 7, capWord: 'steps', role: 'Multi-hue ramps extend a sequential scale for dense, continuous data; they still imply order.', desc: 'Dense continuous data: indigo → pale yellow with monotonic lightness. Same values in light and dark.' },
+    { key: 'heat', held: true, label: 'Heatmap severity', short: 'Heat', cap: 5, capWord: 'steps', role: 'The severity ramp encodes the intensity of something bad and is sized for cells and fills, not named states.', desc: 'Intensity that means “worse”: gold → orange → red → critical. Five steps max; agrees with status chips on the page.' },
+    { key: 'emphasis', label: 'Emphasis', short: 'Emph', cap: 10, capWord: 'series', role: 'Emphasis spends color on one or two series and mutes the rest — it needs a focus, not a comparison of equals.', desc: 'One highlighted series in primary, an optional comparison in secondary (from 3 series up), everything else muted.' },
+  ];
+  static CHARTS = [
+    { key: 'line', title: 'Line', unit: 'series', limitWhy: 'Lines cross; every extra series multiplies the crossings a reader must untangle by color alone.', fit: {
+      categorical: ['good', 5, 'Beyond 5 lines tangle. Add markers or dashes, or switch to emphasis or small multiples.'],
+      status: ['good', 5, 'Series are states over time (devices per utilization state). Four severity levels plus Healthy is the ceiling.'],
+      sequential: ['ok', 4, 'Thin strokes show little color: the two lightest steps vanish on white. Keep to 4 darker steps, ordered legend.'],
+      diverging: ['ok', 3, 'Only when series sit on either side of a midpoint — below / on / above target.'],
+      multihue: ['ok', 5, 'Ordered series only; the lightest step fails as a stroke on a light surface.'],
+      heat: ['bad', 0, 'A heatmap ramp is for cells. Named states on lines take status tokens.'],
+      emphasis: ['good', 10, 'The classic use: one line in primary, the rest muted context.'] } },
+    { key: 'column', title: 'Column (grouped)', unit: 'series', limitWhy: 'Each added series narrows every column in the group; below ~12px wide, hue stops being readable.', fit: {
+      categorical: ['good', 6, 'Grouped columns thinner than ~12px stop reading. Above 6 series stack them or split the chart.'],
+      status: ['good', 5, 'Counts per state per group. Keep the order critical → low → healthy.'],
+      sequential: ['good', 5, 'Ordered bins such as RAM tiers or device age. The lightest step relies on the 1px surface border.'],
+      diverging: ['ok', 5, 'Deviation bins per group are rare — a diverging bar chart is usually clearer.'],
+      multihue: ['ok', 5, 'Ordered bins only.'],
+      heat: ['ok', 5, 'Only when the bins are severity bands; named states should use status tokens.'],
+      emphasis: ['good', 10, 'Highlight one series against muted peers.'] } },
+    { key: 'bar', title: 'Bar (ranked)', unit: 'bars', limitWhy: 'Bars are named on the axis, so the ceiling is how many colors stay distinct when bars sit side by side.', fit: {
+      categorical: ['ok', 10, 'One series is one color. Color each bar only when the same categories are keyed to those colors elsewhere on the page.'],
+      status: ['good', 8, 'One bar per state, ordered by severity — color and position agree.'],
+      sequential: ['good', 7, 'Ordered bins as bars; color reinforces the ranking.'],
+      diverging: ['good', 7, 'Signed values around zero — the natural diverging bar chart.'],
+      multihue: ['ok', 7, 'Ordered bins only.'],
+      heat: ['ok', 5, 'Severity bands as bars; prefer status for named states.'],
+      emphasis: ['good', 10, 'Highlight one bar: the selected device, this app.'] } },
+    { key: 'stacked', title: 'Stacked column (100%)', unit: 'segments', limitWhy: 'Every segment must be wide enough to see and label; thin segments in neighbouring hues merge.', fit: {
+      categorical: ['good', 5, 'Slivers under ~4% are unreadable. Above 5 segments group the tail into “Other” (color 10).'],
+      status: ['good', 5, 'The canonical severity stack. Order segments critical → low → healthy.'],
+      sequential: ['good', 5, 'Ordered bands read as a gradient across the stack.'],
+      diverging: ['good', 5, 'Likert-style stacks (below ↔ above): keep an odd count so the midpoint segment exists.'],
+      multihue: ['ok', 5, 'Ordered bands only.'],
+      heat: ['ok', 5, 'Severity bands; prefer status for named states.'],
+      emphasis: ['ok', 5, 'Highlight one segment; muted neighbours still need the 1px surface border.'] } },
+    { key: 'area', title: 'Area (stacked)', unit: 'layers', limitWhy: 'Upper layers inherit the wobble of every layer below, so thin layers turn to noise.', fit: {
+      categorical: ['good', 5, 'Above 5 layers the thin upper layers turn to noise — group them or switch to lines.'],
+      status: ['good', 5, 'State composition over time.'],
+      sequential: ['good', 5, 'Ordered layers stack naturally; the light surface line separates them.'],
+      diverging: ['bad', 0, 'A stack has no midpoint; diverging colors imply one.'],
+      multihue: ['ok', 5, 'Ordered layers only.'],
+      heat: ['bad', 0, 'Named states over time take status tokens.'],
+      emphasis: ['ok', 6, 'Highlight one layer; muted layers need the surface line between them.'] } },
+    { key: 'pie', title: 'Pie / donut', unit: 'slices', limitWhy: 'Readers compare angles poorly; beyond ~5 slices, small slices can’t be labelled or told apart.', fit: {
+      categorical: ['good', 5, 'Slices under ~5% cannot be labelled. Above 5 group the tail into “Other” (color 10).'],
+      status: ['good', 5, 'Composition by state, slices ordered critical → low → healthy.'],
+      sequential: ['ok', 5, 'Ordered shares (tiers). The lightest slice relies on the 2px surface border.'],
+      diverging: ['bad', 0, 'A pie has no midpoint.'],
+      multihue: ['ok', 5, 'Ordered shares only.'],
+      heat: ['bad', 0, 'Use status for named states.'],
+      emphasis: ['good', 3, 'One slice in primary, the rest muted: “share of X”.'] } },
+    { key: 'scatter', title: 'Scatter', unit: 'series', limitWhy: 'Small, overlapping marks show little color, so only a few hues stay separable in a dense cloud.', fit: {
+      categorical: ['good', 4, 'Overlapping points need a marker shape per series; above 4 the cloud is unreadable.'],
+      status: ['good', 4, 'Points colored by state — the most useful scatter coloring for a fleet.'],
+      sequential: ['ok', 3, 'Small marks show little color. Encode a third quantity with size (bubble) instead of light steps.'],
+      diverging: ['ok', 3, 'Below / on / above target as three series.'],
+      multihue: ['ok', 4, 'Ordered series only.'],
+      heat: ['bad', 0, 'Use status.'],
+      emphasis: ['good', 10, 'One series highlighted, the population muted.'] } },
+    { key: 'heatmap', title: 'Heatmap', unit: 'color classes', limitWhy: 'Each cell is matched against the legend; beyond 5–7 classes neighbouring steps look identical.', fit: {
+      categorical: ['bad', 0, 'Cells encode a quantity; categorical hues have no order. A discrete state matrix uses status.'],
+      status: ['good', 4, 'State matrix: device × check → critical / high / medium / low. Classes run healthy → critical as values rise.'],
+      sequential: ['good', 7, 'Volume or count per cell. Five classes is the sweet spot.'],
+      diverging: ['good', 7, 'Deviation from a target per cell; odd class counts keep the neutral midpoint.'],
+      multihue: ['good', 7, 'Dense grids where one hue runs out of steps.'],
+      heat: ['good', 5, 'Severity intensity — the reason the ramp exists.'],
+      emphasis: ['bad', 0, 'Nothing to emphasize in a grid; outline the selected cell instead.'] } },
+    { key: 'treemap', title: 'Treemap', unit: 'groups', limitWhy: 'Adjacent rectangles need clearly different hues; past ~7 groups, nesting reads better than color.', fit: {
+      categorical: ['good', 7, 'Color by group, size by value. Above 7 groups, nest instead of adding colors.'],
+      status: ['good', 5, 'Leaf color by state, size by count.'],
+      sequential: ['good', 7, 'Size is the count; color is a second quantity such as utilization.'],
+      diverging: ['good', 7, 'Size is the count; color is change vs. last period.'],
+      multihue: ['ok', 7, 'A second quantity on dense trees.'],
+      heat: ['good', 5, 'Size is the count; color is severity.'],
+      emphasis: ['ok', 10, 'Highlight one group, the rest muted.'] } },
+    { key: 'gauge', title: 'Solid gauge', unit: 'bands', limitWhy: 'A gauge is read at a glance; more bands than a few thresholds turns a verdict into a puzzle.', fit: {
+      categorical: ['bad', 0, 'Gauge bands are ordered thresholds; categorical hues carry no order.'],
+      status: ['good', 4, 'Three bands (Poor / Fair / Healthy) is the norm; four severity bands is the ceiling. Bands run critical → healthy as the score rises.'],
+      sequential: ['ok', 5, 'Intensity bands without a judgement — rare on a gauge.'],
+      diverging: ['ok', 3, 'Below / on / above a target.'],
+      multihue: ['bad', 0, 'Too many hues for one arc.'],
+      heat: ['ok', 5, 'Severity bands; prefer status.'],
+      emphasis: ['good', 1, 'A single value: primary on the faint track. More than one band needs status.'] } },
+  ];
+  static LABELS = {
+    cat: ['Laptops', 'Desktops', 'Printers', 'Virtual machines', 'Video endpoints', 'Phones', 'Tablets', 'Servers', 'Kiosks', 'Other'],
+    seq: ['4 GB', '8 GB', '16 GB', '24 GB', '32 GB', '64 GB', '128 GB'],
+    div: ['Far below', 'Below', 'Slightly below', 'On target', 'Slightly above', 'Above', 'Far above'],
+    multi: ['< 1 h', '1–4 h', '4–8 h', '8–24 h', '1–3 d', '3–7 d', '> 7 d'],
+    heat: ['Minimal', 'Low', 'Moderate', 'High', 'Severe'],
+    em: ['Finance', 'Fleet average', 'Engineering', 'Sales', 'Support', 'Marketing', 'Legal', 'HR', 'Operations', 'Field'],
+  };
+  static LADDER = { 1: ['critical'], 2: ['positive', 'high'], 3: ['positive', 'medium', 'high'], 4: ['critical', 'high', 'medium', 'low'], 5: ['critical', 'high', 'medium', 'low', 'positive'], 6: ['critical', 'high', 'medium', 'low', 'positive', 'neutral'], 7: ['critical', 'high', 'medium', 'low', 'positive', 'neutral', 'none'], 8: ['critical', 'high', 'medium', 'low', 'positive', 'neutral', 'none', 'info'] };
+  static RANK = { positive: 0, info: 1, neutral: 2, none: 3, low: 4, medium: 5, high: 6, critical: 7 };
+  state = { P: null, mode: null, palette: null, n: null, ov: {} };
+  refsMap = {}; charts = {}; sigs = {};
+  data = (() => { let seed = 42; const r = () => (seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296; const A = (k, f) => Array.from({ length: k }, (_, i) => f(i));
+    return { line: A(10, s => { let v = 30 + s * 5; return A(12, () => { v += (r() - 0.45) * 6; return Math.round(v * 10) / 10; }); }),
+      column: A(10, () => A(5, () => Math.round(20 + r() * 80))), bar: [1240, 980, 860, 720, 610, 480, 390, 300, 220, 160],
+      stacked: A(10, () => A(5, () => Math.round(5 + r() * 40))), area: A(10, () => { let v = 10 + r() * 20; return A(12, () => { v += (r() - 0.45) * 4; return Math.max(2, Math.round(v)); }); }),
+      pie: [34, 22, 15, 10, 7, 5, 3, 2, 1.2, 0.8], scatter: A(10, () => { const cx = 25 + r() * 50, cy = 25 + r() * 50; return A(16, () => [Math.round(cx + (r() - 0.5) * 34), Math.round(cy + (r() - 0.5) * 34)]); }),
+      heat: A(6, () => A(7, () => Math.round(r() * 100))), tree: [420, 310, 260, 190, 150, 120, 90, 70, 50, 30] }; })();
+  ref(k) { return this.refsMap[k] || (this.refsMap[k] = React.createRef()); }
+  cur() { const n = Number(this.state.n || this.props.categories || 5); return { mode: this.state.mode || this.props.mode || 'light', palette: [this.state.palette, this.props.palette].find(k => k && !Component.PALETTES.find(p => p.key === k).held) || 'categorical', n: Math.min(10, Math.max(1, n)) }; }
+  cfg(key) { const g = this.cur(), o = this.state.ov[key] || {}; return { palette: o.palette || g.palette, n: o.n || g.n, local: !!(o.palette || o.n) }; }
+  setOv(key, patch) { this.setState(s => { const g = this.cur(), o = { ...(s.ov[key] || {}), ...patch };
+    if (o.palette === g.palette) delete o.palette; if (o.n === g.n) delete o.n;
+    const ov = { ...s.ov }; if (o.palette || o.n) ov[key] = o; else delete ov[key]; return { ov }; }); }
+  componentDidMount() {
+    import('./palette-data.js').then(m => { this.setState({ P: m.PALETTE }); this.whenHC(() => this.draw()); }).catch(e => console.error('palette-data load failed', e));
+  }
+  componentDidUpdate() { if (this.state.P) this.whenHC(() => this.draw()); }
+  componentWillUnmount() { Object.values(this.charts).forEach(c => c.destroy()); }
+  whenHC(fn, tries = 0) {
+    const H = window.Highcharts, st = H && H.seriesTypes;
+    if (st && st.solidgauge && st.heatmap && st.treemap) return fn();
+    if (!window.__hcLoading) {
+      window.__hcLoading = true;
+      const base = 'https://cdn.jsdelivr.net/npm/highcharts@11.4.8/';
+      const load = src => new Promise((res, rej) => { const s = document.createElement('script'); s.src = base + src; s.crossOrigin = 'anonymous'; s.onload = res; s.onerror = rej; document.head.appendChild(s); });
+      (H ? Promise.resolve() : load('highcharts.js')).then(() => load('highcharts-more.js')).then(() => load('modules/solid-gauge.js')).then(() => load('modules/heatmap.js')).then(() => load('modules/treemap.js')).then(() => load('modules/pattern-fill.js')).then(() => load('modules/accessibility.js')).catch(e => console.error('Highcharts load failed', e));
+    }
+    if (tries < 300) setTimeout(() => this.whenHC(fn, tries + 1), 100);
+  }
+  tokens() {
+    const P = this.state.P, { mode } = this.cur(), dark = mode === 'dark';
+    return { P, mode, dark, cat: P.categorical[mode], st: Object.fromEntries(P.status.keys.map((k, i) => [k, P.status[mode][i]])), ch: P.chrome[mode], em: P.emphasis[mode], surface: dark ? '#212121' : '#FFFFFF', hatch: P.status.hatch[mode] };
+  }
+  resolve(t, palette, n) {
+    const { P, mode } = t, L = Component.LABELS, pal = Component.PALETTES.find(p => p.key === palette), k = Math.min(n, pal.cap);
+    const pick = (c, m) => c === 1 ? [Math.round((m - 1) * 0.66)] : Array.from({ length: c }, (_, i) => Math.round(i * (m - 1) / (c - 1)));
+    const it = (hex, label, labelColor, token, key) => ({ hex, label, labelColor, token, key: key || token });
+    if (palette === 'categorical') return P.categorical[mode].slice(0, k).map((c, i) => it(c.hex, L.cat[i], c.label, 'dataviz.categorical.' + String(i + 1).padStart(2, '0')));
+    if (palette === 'status') { const names = k === 2 ? { positive: 'Healthy', high: 'Poor' } : k === 3 ? { positive: 'Healthy', medium: 'Fair', high: 'Poor' } : { critical: 'Critical', high: 'High', medium: 'Medium', low: 'Low', positive: 'Healthy', neutral: 'Not applicable', none: 'No data', info: 'Informational' };
+      return Component.LADDER[k].map(key => it(t.st[key].hex, names[key], t.st[key].label, 'dataviz.status.' + key, key)); }
+    if (palette === 'sequential') { if (k === 5) return P.sequential[mode + '5'].map((h, i) => it(h, L.seq[[0, 2, 3, 4, 6][i]], P.sequential.desc[mode + '5'][i].label, 'dataviz.sequential.blue-5-' + (i + 1)));
+      return pick(k, 7).map(i => it(P.sequential[mode + '7'][i], L.seq[i], P.sequential.desc[mode + '7'][i].label, 'dataviz.sequential.blue-7-' + (i + 1))); }
+    if (palette === 'diverging') { const pool = k % 2 === 0 ? [0, 1, 2, 4, 5, 6] : [0, 1, 2, 3, 4, 5, 6]; const idx = k === 1 ? [0] : pick(k, pool.length).map(j => pool[j]);
+      return idx.map(i => it(P.diverging[mode + '7'][i], L.div[i], P.diverging.desc[mode + '7'][i].label, 'dataviz.diverging.blue-copper-' + (i + 1))); }
+    if (palette === 'multihue') return pick(k, 7).map(i => it(P.multihue7[i], L.multi[i], P.multihue7desc[mode][i].label, 'dataviz.multihue.7-' + (i + 1)));
+    if (palette === 'heat') return pick(k, 5).map(i => it(P.heatSeverity[mode + '5'][i], L.heat[i], P.heatSeverity.desc[mode + '5'][i].label, 'dataviz.heatmap.severity-' + (i + 1)));
+    return Array.from({ length: k }, (_, i) => i === 0 ? it(t.em.primary, L.em[0], t.cat[0].label, 'dataviz.emphasis.primary', 'primary') : (i === 1 && k >= 3) ? it(t.em.secondary, L.em[1], t.cat[1].label, 'dataviz.emphasis.secondary', 'secondary') : it(t.em.muted, L.em[i], '#1A1A1A', 'dataviz.emphasis.muted', 'muted' + i));
+  }
+  base(t) {
+    return { chart: { backgroundColor: 'transparent', style: { fontFamily: 'inherit' }, spacing: [12, 6, 4, 6] }, title: { text: undefined }, credits: { enabled: false }, exporting: { enabled: false }, accessibility: { enabled: true },
+      xAxis: { lineColor: t.ch.axis, tickColor: t.ch.axis, labels: { style: { color: t.ch.label, fontSize: '11px' } }, title: { text: null } },
+      yAxis: { gridLineColor: t.ch.grid, labels: { style: { color: t.ch.label, fontSize: '11px' } }, title: { text: null } },
+      legend: { itemStyle: { color: t.ch.title, fontWeight: '500', fontSize: '11px' }, itemHoverStyle: { color: t.ch.title }, symbolRadius: 3, itemDistance: 14 },
+      tooltip: { backgroundColor: t.ch.tooltipBg, borderWidth: 0, borderRadius: 8, style: { color: t.ch.tooltipText, fontSize: '12px' }, shadow: false },
+      plotOptions: { series: { borderColor: t.surface, borderWidth: 1, animation: false, dataLabels: { style: { textOutline: 'none', fontWeight: '600', fontSize: '11px' } } }, column: { borderRadius: 2 }, bar: { borderRadius: 2 } } };
+  }
+  draw() {
+    const H = window.Highcharts; if (!H || !this.state.P) return;
+    H.setOptions({ lang: { thousandsSep: ',' } });
+    const t = this.tokens(), base = this.base(t);
+    Component.CHARTS.forEach(c => { const { palette, n } = this.cfg(c.key), sig = [t.mode, palette, n].join('|');
+      if (this.sigs[c.key] === sig && this.charts[c.key]) return;
+      const el = this.ref(c.key).current; if (!el) return;
+      if (this.charts[c.key]) this.charts[c.key].destroy();
+      this.charts[c.key] = H.chart(el, H.merge(base, this.opts(c.key, t, palette, n))); this.sigs[c.key] = sig; });
+  }
+  opts(key, t, palette, n) {
+    const D = this.data, items = this.resolve(t, palette, n), k = items.length;
+    const fill = i => i.key === 'none' ? { pattern: { path: { d: 'M 0 0 L 8 8', strokeWidth: 1.5 }, width: 8, height: 8, color: t.hatch, backgroundColor: i.hex } } : i.hex;
+    const SYM = ['circle', 'square', 'diamond', 'triangle', 'triangle-down'];
+    const weeks = ['Aug 1', 'Aug 9', 'Aug 17', 'Aug 25', 'Sep 2', 'Sep 10', 'Sep 18', 'Sep 26', 'Oct 4', 'Oct 12', 'Oct 20', 'Oct 28'];
+    const groups = ['Finance', 'Engineering', 'Sales', 'Support', 'Field ops'];
+    const byRank = dir => palette === 'status' ? items.slice().sort((a, b) => dir * (Component.RANK[a.key] - Component.RANK[b.key])) : items;
+    if (key === 'line') return { chart: { type: 'line' }, xAxis: { categories: weeks, tickInterval: 2 }, tooltip: { shared: true },
+      plotOptions: { series: { lineWidth: 2, marker: { enabled: k > 4, radius: 3.5, lineColor: t.surface, lineWidth: 1 } } },
+      series: items.map((it, i) => ({ name: it.label, color: it.hex, marker: { symbol: SYM[i % 5] }, data: D.line[i] })) };
+    if (key === 'column') return { chart: { type: 'column' }, xAxis: { categories: groups }, tooltip: { shared: true },
+      series: items.map((it, i) => ({ name: it.label, color: fill(it), data: D.column[i] })) };
+    if (key === 'bar') return { chart: { type: 'bar' }, xAxis: { categories: items.map(it => it.label) }, legend: { enabled: false }, tooltip: { pointFormat: '<b>{point.y:,.0f}</b> devices' },
+      series: [{ name: 'Devices', data: items.map((it, i) => ({ y: D.bar[i], color: fill(it) })), dataLabels: { enabled: true, format: '{point.y:,.0f}', style: { color: t.ch.title } } }] };
+    if (key === 'stacked') return { chart: { type: 'column' }, xAxis: { categories: groups }, yAxis: { max: 100, labels: { format: '{value}%' } }, plotOptions: { column: { stacking: 'percent' } }, tooltip: { shared: true },
+      series: items.map((it, i) => ({ name: it.label, color: fill(it), data: D.stacked[i], dataLabels: { enabled: true, format: '{point.percentage:.0f}%', style: { color: it.labelColor }, filter: { property: 'percentage', operator: '>', value: 8 } } })) };
+    if (key === 'area') return { chart: { type: 'area' }, xAxis: { categories: weeks, tickInterval: 2 }, plotOptions: { area: { stacking: 'normal', marker: { enabled: false }, lineWidth: 1, fillOpacity: 1 } }, tooltip: { shared: true },
+      series: items.map((it, i) => ({ name: it.label, color: it.hex, fillColor: fill(it), lineColor: t.surface, data: D.area[i] })) };
+    if (key === 'pie') return { chart: { type: 'pie' }, plotOptions: { pie: { innerSize: '60%', size: '76%', borderWidth: 2, borderColor: t.surface, dataLabels: { enabled: true, format: '{point.name}<br><span style="opacity:.7">{point.percentage:.0f}%</span>', style: { color: t.ch.title, fontSize: '11px', fontWeight: '500' }, connectorColor: t.ch.axis, distance: 12, filter: { property: 'percentage', operator: '>', value: 2.5 } } } }, tooltip: { pointFormat: '<b>{point.percentage:.1f}%</b>' },
+      series: [{ name: 'Share', data: items.map((it, i) => ({ name: it.label, y: D.pie[i], color: fill(it) })) }] };
+    if (key === 'scatter') return { chart: { type: 'scatter' }, xAxis: { gridLineWidth: 1, gridLineColor: t.ch.grid, min: 0, max: 100, labels: { format: '{value}%' } }, yAxis: { min: 0, max: 100 }, tooltip: { pointFormat: 'CPU {point.x}% · Memory {point.y}%' },
+      plotOptions: { scatter: { marker: { radius: 4.5, lineColor: t.surface, lineWidth: 1 } } },
+      series: items.map((it, i) => ({ name: it.label, color: it.hex, marker: { symbol: SYM[i % 5] }, data: D.scatter[i] })) };
+    const hItems = byRank(1), isDiv = palette === 'diverging', lo = isDiv ? -50 : 0, span = 100;
+    const classes = hItems.map((it, i) => { const from = lo + i * span / k, to = lo + (i + 1) * span / k; return { from: i === 0 ? -Infinity : from, to: i === k - 1 ? Infinity : to, color: it.hex, name: (palette === 'status' || palette === 'categorical' || palette === 'emphasis') ? it.label : (isDiv ? (from > 0 ? '+' : '') + Math.round(from) + ' … ' + (to > 0 ? '+' : '') + Math.round(to) : Math.round(from) + '–' + Math.round(to)) }; });
+    const cls = v => Math.min(k - 1, Math.max(0, Math.floor((v - lo) / span * k)));
+    if (key === 'heatmap') return { chart: { type: 'heatmap' }, xAxis: { categories: weeks.slice(0, 7) }, yAxis: { categories: groups.concat(['Legal']), reversed: true, gridLineWidth: 0 }, colorAxis: { dataClasses: classes },
+      legend: { enabled: true, align: 'center', verticalAlign: 'bottom', layout: 'horizontal', symbolRadius: 2, symbolHeight: 10, symbolWidth: 10 }, tooltip: { pointFormat: '<b>{point.value}</b>' },
+      series: [{ name: 'Alerts', borderWidth: 1, borderColor: t.surface, dataLabels: { enabled: true, style: { fontSize: '11px', fontWeight: '600' } },
+        data: D.heat.flatMap((row, y) => row.map((v, x) => { const val = v + lo; return { x, y, value: val, dataLabels: { style: { color: hItems[cls(val)].labelColor } } }; })) }] };
+    if (key === 'treemap') return { legend: { enabled: false }, tooltip: { pointFormat: '<b>{point.value}</b> devices' },
+      series: [{ type: 'treemap', layoutAlgorithm: 'squarified', borderColor: t.surface, borderWidth: 2, dataLabels: { enabled: true, style: { fontSize: '12px', fontWeight: '600', textOutline: 'none' }, format: '{point.name}<br><span style="font-weight:400">{point.value}</span>' },
+        data: items.map((it, i) => ({ name: it.label, value: D.tree[i], color: fill(it), dataLabels: { style: { color: it.labelColor } } })) }] };
+    const gItems = byRank(-1), score = 72, band = gItems[Math.min(k - 1, Math.floor(score / 100 * k))];
+    if (key === 'gauge') return { chart: { type: 'solidgauge', spacing: [6, 0, 0, 0] }, pane: { startAngle: -120, endAngle: 120, size: '120%', center: ['50%', '68%'], background: { innerRadius: '68%', outerRadius: '88%', shape: 'arc', backgroundColor: t.em.faint, borderWidth: 0 } },
+      yAxis: { min: 0, max: 100, lineWidth: 0, tickWidth: 0, minorTickInterval: null, labels: { enabled: false }, stops: gItems.flatMap((it, i) => [[i / k, it.hex], [(i + 1) / k - 0.0001, it.hex]]),
+        plotBands: gItems.map((it, i) => ({ from: i * 100 / k, to: (i + 1) * 100 / k, color: it.hex, outerRadius: '100%', thickness: '7%', borderWidth: 0 })) },
+      tooltip: { enabled: false }, plotOptions: { solidgauge: { innerRadius: '68%', radius: '88%', dataLabels: { y: -24, borderWidth: 0, useHTML: true, format: '<div style="text-align:center;font-family:inherit"><div style="font-size:32px;font-weight:700;color:' + t.ch.title + ';letter-spacing:-.02em">{y}</div><div style="font-size:12px;color:' + t.ch.label + '">' + band.label + '</div></div>' } } },
+      series: [{ name: 'Score', data: [score] }] };
+  }
+  renderVals() {
+    const { mode, palette, n } = this.cur(), dark = mode === 'dark', P = this.state.P, PAL = Component.PALETTES, pal = PAL.find(p => p.key === palette), REL = PAL.filter(p => !p.held);
+    const ink = dark ? '#FFFFFF' : '#1A1A1A', muted = dark ? '#A3A3A3' : '#636363', line = dark ? '#3D3D3D' : '#E8E8E8';
+    const vals = { page: dark ? '#1A1A1A' : '#F2F6FD', card: dark ? '#212121' : '#FFFFFF', ink, muted, line, n,
+      setLight: () => this.setState({ mode: 'light' }), setDark: () => this.setState({ mode: 'dark' }),
+      lightBtnBg: dark ? 'transparent' : '#1A1A1A', lightBtnFg: dark ? '#525252' : '#FFFFFF', darkBtnBg: dark ? '#1A1A1A' : 'transparent', darkBtnFg: dark ? '#FFFFFF' : '#525252',
+      paletteBtns: REL.map(p => ({ label: p.label, bg: p.key === palette ? '#1A1A1A' : 'transparent', fg: p.key === palette ? '#FFFFFF' : '#525252', onClick: () => this.setState({ palette: p.key }) })),
+      countOpts: Array.from({ length: 10 }, (_, i) => ({ v: i + 1, label: String(i + 1) })), palOpts: REL.map(p => ({ key: p.key, label: p.label })),
+      onGlobalN: e => this.setState({ n: Number(e.target.value) }),
+      hasOverrides: Object.keys(this.state.ov).length > 0, resetAll: () => this.setState({ ov: {} }),
+      resetAllText: 'Reset ' + Object.keys(this.state.ov).length + ' local override' + (Object.keys(this.state.ov).length === 1 ? '' : 's'),
+      paletteDesc: pal.desc, hasCapNotice: n > pal.cap, capNotice: n > pal.cap ? `${pal.label} has ${pal.cap} ${pal.capWord} — ${n} categories cannot be told apart, so the charts show ${pal.cap}.` : '' };
+    const vColor = { good: dark ? '#01AE6A' : '#027D4B', ok: dark ? '#F78437' : '#D86102', bad: dark ? '#FD554C' : '#C92B28' }, vColorLight = { good: '#027D4B', ok: '#D86102', bad: '#C92B28' };
+    const tint = dark ? { good: ['#00351D', '#CBFCDE'], ok: ['#491C00', '#FFD0AF'], bad: ['#4B0A09', '#FFCDC4'] } : { good: ['#CBFCDE', '#01633A'], ok: ['#FFE9D9', '#602700'], bad: ['#FFE5E0', '#921A19'] };
+    vals.sel = P ? this.resolve(this.tokens(), palette, n) : [];
+    vals.cards = Component.CHARTS.map(c => {
+      const cf = this.cfg(c.key), cp = PAL.find(p => p.key === cf.palette), cn = cf.n, effN = Math.min(cn, cp.cap);
+      const [v, max, note] = c.fit[cf.palette], unit1 = c.unit;
+      let kind = v, badge = v === 'good' ? 'Recommended' : v === 'ok' ? 'Use with care' : 'Not recommended', reasons = [], tries = [], whyTitle = '';
+      const set = patch => this.setOv(c.key, patch);
+      const alts = need => REL.filter(p => p.key !== cf.palette && c.fit[p.key][0] === 'good' && c.fit[p.key][1] >= need).slice(0, 3);
+      if (v === 'bad') {
+        whyTitle = 'Why ' + cp.label.toLowerCase() + ' doesn’t fit a ' + c.title.toLowerCase().replace(/ \(.*\)/, '');
+        reasons = [cp.role, note];
+        tries = (alts(effN).length ? alts(effN) : alts(1)).map(p => ({ label: p.label, onClick: () => set({ palette: p.key }) }));
+      } else if (effN > max) {
+        kind = 'bad'; badge = 'Over the limit · max ' + max + ' ' + unit1;
+        whyTitle = 'Why ' + max + ' is the ceiling here';
+        reasons = [cn + ' ' + unit1 + ' asked for; ' + cp.label + ' on this chart tops out at ' + max + '.', c.limitWhy, note];
+        tries = [{ label: 'Show ' + max, onClick: () => set({ n: max }) }].concat(alts(effN).map(p => ({ label: p.label + ' (≤' + c.fit[p.key][1] + ')', onClick: () => set({ palette: p.key }) })));
+      }
+      if (cn > cp.cap) reasons.push(cp.label + ' only has ' + cp.cap + ' ' + cp.capWord + ', so ' + cn + ' is drawn as ' + cp.cap + '.');
+      const hasWhy = reasons.length > 0 && kind === 'bad';
+      const acc = '#3363D2';
+      return { key: c.key, title: c.title, unitText: 'N = ' + unit1, ref: this.ref(c.key), badge, badgeBg: tint[kind][0], badgeFg: tint[kind][1], note,
+        palette: cf.palette, n: cn, isLocal: cf.local, palBorder: this.state.ov[c.key] && this.state.ov[c.key].palette ? acc : line, nBorder: this.state.ov[c.key] && this.state.ov[c.key].n ? acc : line,
+        onPalette: e => set({ palette: e.target.value }), onN: e => set({ n: Number(e.target.value) }), reset: () => this.setState(s => { const ov = { ...s.ov }; delete ov[c.key]; return { ov }; }),
+        hasWhy, noWhy: !hasWhy, whyTitle, whyBg: tint.bad[0], whyFg: tint.bad[1], reasons: reasons.map(text => ({ text })), tries,
+        fits: REL.map(p => { const [fv, fmax, fnote] = c.fit[p.key]; const active = p.key === cf.palette; return { short: p.short, dot: vColor[fv], maxText: fv === 'bad' ? ' —' : ' ≤' + fmax, title: p.label + (fv === 'bad' ? ' — not recommended. ' : ' — up to ' + fmax + ' ' + unit1 + '. ') + fnote, bg: active ? (dark ? '#3D3D3D' : '#F0F0F0') : 'transparent', border: active ? (dark ? '#6C6C6C' : '#C2C2C2') : line, onClick: () => set({ palette: p.key }) }; }) };
+    });
+    vals.matrixHead = PAL.map(p => ({ label: p.held ? p.label + ' · held' : p.label }));
+    vals.matrix = Component.CHARTS.map(c => ({ title: c.title, unit: c.unit, cells: PAL.map(p => { const [fv, fmax] = c.fit[p.key]; return { dot: p.held ? '#C2C2C2' : vColorLight[fv], text: fv === 'bad' ? 'Avoid' : `≤ ${fmax}`, fg: p.held ? '#858585' : fv === 'bad' ? '#921A19' : '#3D3D3D' }; }) }));
+    return vals;
+  }
+}
+</script>
+</body>
+</html>

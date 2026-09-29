@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F2F6FD;color:#1A1A1A;font-family:'Albert Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#024AD8;text-decoration:none}a:hover{color:#103FB2;text-decoration:underline}
+</style>
+</helmet>
+<div style="max-width:2300px;margin:0 auto;padding:0 clamp(20px,3vw,56px) 80px">
+  <nav style="display:flex;align-items:center;gap:24px;min-height:64px;border-bottom:1px solid #E4EEFA;flex-wrap:wrap">
+    <a href="Start Here.dc.html" style="display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;color:#1A1A1A;text-decoration:none">
+      <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#3363D2"></span>
+      <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#D07B48;margin-left:-6px"></span>
+      <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#10918C;margin-left:-6px"></span>
+      <span style="margin-left:4px">Data Viz Colors</span>
+    </a>
+    <div style="display:flex;gap:20px;font-size:14px;font-weight:500;flex-wrap:wrap">
+      <a href="Start Here.dc.html" style="color:#525252;padding:22px 0">Start here</a>
+      <a href="Guidelines.dc.html" style="color:#1A1A1A;border-bottom:2px solid #024AD8;padding:22px 0">Guidelines</a>
+      <a href="Palettes.dc.html" style="color:#525252;padding:22px 0">Palettes</a>
+      <a href="Chart Gallery.dc.html" style="color:#525252;padding:22px 0">Chart gallery</a>
+      <a href="Audit Kit.dc.html" style="color:#525252;padding:22px 0">Audit kit</a>
+      <a href="Swatch Sheet.dc.html" style="color:#525252;padding:22px 0">Swatch sheet</a>
+    </div>
+  </nav>
+
+  <header style="padding:48px 0 8px;max-width:820px">
+    <div style="font-size:13px;font-weight:600;color:#024AD8;letter-spacing:.04em;text-transform:uppercase">Guidelines</div>
+    <h1 style="font-size:40px;line-height:1.1;margin:10px 0 14px;font-weight:700;letter-spacing:-.01em;text-wrap:pretty">Which palette, when — and the rules that keep charts honest.</h1>
+    <p style="font-size:16px;line-height:1.55;color:#525252;margin:0;text-wrap:pretty">Color in a chart answers exactly one question. Decide what the question is, pick the palette built for it, and never mix palettes inside one chart. Each rule below is tagged for the people who act on it.</p>
+  </header>
+
+  <section id="decide" style="margin-top:40px">
+    <h2 style="font-size:24px;margin:0 0 6px;font-weight:700">1 · What does color encode?</h2>
+    <p style="margin:0 0 18px;color:#525252;font-size:15px;line-height:1.5;max-width:760px;text-wrap:pretty">Start here for every chart. The answer names the palette; the palette names the tokens.</p>
+    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px">
+      <a href="Palettes.dc.html#categorical" style="color:inherit;background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px;display:grid;gap:8px;text-decoration:none">
+        <div style="display:flex;gap:3px"><span style="flex:1;height:8px;border-radius:2px;background:#3363D2"></span><span style="flex:1;height:8px;border-radius:2px;background:#D07B48"></span><span style="flex:1;height:8px;border-radius:2px;background:#10918C"></span><span style="flex:1;height:8px;border-radius:2px;background:#A24496"></span><span style="flex:1;height:8px;border-radius:2px;background:#6F8D19"></span></div>
+        <div style="font-size:13px;color:#636363">Groups with no natural order</div>
+        <div style="font-weight:700;font-size:16px">Categorical</div>
+        <div style="font-size:13px;color:#525252;line-height:1.45">Device types, apps, OS versions, regions, teams. Up to 10; stop at 5–7 when you can.</div>
+      </a>
+      <a href="Palettes.dc.html#status" style="color:inherit;background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px;display:grid;gap:8px;text-decoration:none">
+        <div style="display:flex;gap:3px"><span style="flex:1;height:8px;border-radius:2px;background:#9B1741"></span><span style="flex:1;height:8px;border-radius:2px;background:#C92B28"></span><span style="flex:1;height:8px;border-radius:2px;background:#D86102"></span><span style="flex:1;height:8px;border-radius:2px;background:#BA7E15"></span><span style="flex:1;height:8px;border-radius:2px;background:#027D4B"></span><span style="flex:1;height:8px;border-radius:2px;background:#858585"></span></div>
+        <div style="font-size:13px;color:#636363">A judgement or a state</div>
+        <div style="font-weight:700;font-size:16px">Status</div>
+        <div style="font-size:13px;color:#525252;line-height:1.45">Severity, health, compliance, utilization bands, availability. The same color means the same thing everywhere.</div>
+      </a>
+      <a href="Palettes.dc.html#sequential" style="color:inherit;background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px;display:grid;gap:8px;text-decoration:none">
+        <div style="display:flex;gap:3px"><span style="flex:1;height:8px;border-radius:2px;background:#E0ECFE"></span><span style="flex:1;height:8px;border-radius:2px;background:#96C0FE"></span><span style="flex:1;height:8px;border-radius:2px;background:#5492EC"></span><span style="flex:1;height:8px;border-radius:2px;background:#0162D4"></span><span style="flex:1;height:8px;border-radius:2px;background:#003E8C"></span></div>
+        <div style="font-size:13px;color:#636363">One quantity, low → high</div>
+        <div style="font-weight:700;font-size:16px">Sequential</div>
+        <div style="font-size:13px;color:#525252;line-height:1.45">Counts, percentages, age, duration — on maps, heatmaps, calendar grids. Use the 7-step ramp when the grid is dense.</div>
+      </a>
+      <a href="Palettes.dc.html#diverging" style="color:inherit;background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px;display:grid;gap:8px;text-decoration:none">
+        <div style="display:flex;gap:3px"><span style="flex:1;height:8px;border-radius:2px;background:#0048A0"></span><span style="flex:1;height:8px;border-radius:2px;background:#87ADE4"></span><span style="flex:1;height:8px;border-radius:2px;background:#DFE1E5"></span><span style="flex:1;height:8px;border-radius:2px;background:#DB9F76"></span><span style="flex:1;height:8px;border-radius:2px;background:#8E4208"></span></div>
+        <div style="font-size:13px;color:#636363">A value against a midpoint</div>
+        <div style="font-weight:700;font-size:16px">Diverging</div>
+        <div style="font-size:13px;color:#525252;line-height:1.45">Above / below benchmark, change since last period. Neutral direction only — judged direction is Status.</div>
+      </a>
+      <a href="Palettes.dc.html#functional" style="color:inherit;background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px;display:grid;gap:8px;text-decoration:none">
+        <div style="display:flex;gap:3px"><span style="flex:1;height:8px;border-radius:2px;background:#858585"></span><span style="flex:1;height:8px;border-radius:2px;background:#858585"></span><span style="flex:1;height:8px;border-radius:2px;background:#3363D2"></span><span style="flex:1;height:8px;border-radius:2px;background:#858585"></span><span style="flex:1;height:8px;border-radius:2px;background:#C2C2C2"></span></div>
+        <div style="font-size:13px;color:#636363">One series matters, the rest is context</div>
+        <div style="font-weight:700;font-size:16px">Emphasis</div>
+        <div style="font-size:13px;color:#525252;line-height:1.45">Selected device vs. fleet, this app vs. others, actual vs. target band.</div>
+      </a>
+      <a href="Palettes.dc.html#functional" style="color:inherit;background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px;display:grid;gap:8px;text-decoration:none">
+        <div style="display:flex;gap:3px"><span style="flex:1;height:8px;border-radius:2px;background:#3363D2"></span><span style="flex:1;height:8px;border-radius:2px;background:#D07B48"></span><span style="flex:1;height:8px;border-radius:2px;background:#027D4B"></span><span style="flex:1;height:8px;border-radius:2px;background:#C92B28"></span></div>
+        <div style="font-size:13px;color:#636363">Exactly two states</div>
+        <div style="font-weight:700;font-size:16px">Binary</div>
+        <div style="font-size:13px;color:#525252;line-height:1.45">Neutral pairs use categorical 1 + 2; judged pairs (compliant / not) use positive + negative.</div>
+      </a>
+      <a href="Palettes.dc.html#functional" style="color:inherit;background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px;display:grid;gap:8px;text-decoration:none">
+        <div style="display:flex;gap:3px"><span style="flex:1;height:8px;border-radius:2px;background:#027D4B"></span><span style="flex:1;height:8px;border-radius:2px;background:#C92B28"></span><span style="flex:1;height:8px;border-radius:2px;background:#636363"></span></div>
+        <div style="font-size:13px;color:#636363">Change in a KPI</div>
+        <div style="font-weight:700;font-size:16px">Trend delta</div>
+        <div style="font-size:13px;color:#525252;line-height:1.45">Color says better / worse / same; the arrow says up / down. Never let “down” default to red.</div>
+      </a>
+    </div>
+  </section>
+  <section id="status-map" style="margin-top:56px">
+    <h2 style="font-size:24px;margin:0 0 6px;font-weight:700">2 · Status vocabulary → tokens</h2>
+    <p style="margin:0 0 18px;color:#525252;font-size:15px;line-height:1.5;max-width:760px;text-wrap:pretty">Every product vocabulary maps onto eight tokens. If a new state does not fit a row here, it gets a row here before it gets a color.</p>
+    <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;overflow-x:auto;font-size:14px">
+      <div style="min-width:1080px">
+      <div style="display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:12px;min-width:0;background:#F5F5F5;color:#525252;font-size:12px;font-weight:600;padding:10px 18px;border-bottom:1px solid #E8E8E8">
+        <div>Vocabulary</div><div>critical</div><div>high</div><div>medium</div><div>low</div><div>positive</div><div>neutral</div><div>none</div><div>info</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:12px;min-width:0;padding:12px 18px;border-bottom:1px solid #E8E8E8;align-items:center">
+        <div style="font-weight:600">Alert severity</div>
+        <div style="display:flex;align-items:center;gap:6px"><span style="flex:none;width:10px;height:10px;border-radius:50%;background:#9B1741"></span><span>Critical</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span style="flex:none;width:10px;height:10px;border-radius:50%;background:#C92B28"></span><span>High</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span style="flex:none;width:10px;height:10px;border-radius:50%;background:#D86102"></span><span>Medium</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span style="flex:none;width:10px;height:10px;border-radius:50%;background:#BA7E15"></span><span>Low</span></div>
+        <div style="color:#A3A3A3">—</div>
+        <div style="display:flex;align-items:center;gap:6px"><span style="flex:none;width:10px;height:10px;border-radius:50%;background:#858585"></span><span>Informational</span></div>
+        <div style="color:#A3A3A3">—</div>
+        <div style="color:#A3A3A3">—</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:12px;min-width:0;padding:12px 18px;border-bottom:1px solid #E8E8E8;align-items:center">
+        <div style="font-weight:600">Outcome / result</div>
+        <div style="color:#A3A3A3">—</div>
+        <div style="display:flex;align-items:center;gap:6px"><span style="flex:none;width:10px;height:10px;border-radius:50%;background:#C92B28"></span><span>Negative · Failed</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span style="flex:none;width:10px;height:10px;border-radius:50%;background:#D86102"></span><span>Warning</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span style="flex:none;width:10px;height:10px;border-radius:50%;background:#BA7E15"></span><span>Caution</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span style="flex:none;width:10px;height:10px;border-radius:50%;background:#027D4B"></span><span>Positive · Passed</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span style="flex:none;width:10px;height:10px;border-radius:50%;background:#858585"></span><span>Neutral</span></div>
+        <div style="color:#A3A3A3">—</div>
+        <div style="color:#A3A3A3">—</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:12px;min-width:0;padding:12px 18px;border-bottom:1px solid #E8E8E8;align-items:center">
+        <div style="font-weight:600">Utilization (memory, CPU, disk)</div>
+        <div style="display:flex;align-items:center;gap:6px"><span style="flex:none;width:10px;height:10px;border-radius:50%;background:#9B1741"></span><span>Critical over</span></div>
+        <div style="color:#A3A3A3">—</div>
+        <div style="display:flex;align-items:center;gap:6px"><span style="flex:none;width:10px;height:10px;border-radius:50%;background:#D86102"></span><span>Over-utilized</span></div>
+        <div style="color:#A3A3A3">—</div>
+        <div style="display:flex;align-items:center;gap:6px"><span style="flex:none;width:10px;height:10px;border-radius:50%;background:#027D4B"></span><span>Normal</span></div>
+        <div style="color:#A3A3A3">—</div>
+        <div style="color:#A3A3A3">—</div>
+        <div style="display:flex;align-items:center;gap:6px"><span style="flex:none;width:10px;height:10px;border-radius:50%;background:#3363D2"></span><span>Under-utilized</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:12px;min-width:0;padding:12px 18px;border-bottom:1px solid #E8E8E8;align-items:center">
+        <div style="font-weight:600">Device health score bands</div>
+        <div style="color:#A3A3A3">—</div>
+        <div style="display:flex;align-items:center;gap:6px"><span style="flex:none;width:10px;height:10px;border-radius:50%;background:#C92B28"></span><span>Poor</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span style="flex:none;width:10px;height:10px;border-radius:50%;background:#D86102"></span><span>Fair</span></div>
+        <div style="color:#A3A3A3">—</div>
+        <div style="display:flex;align-items:center;gap:6px"><span style="flex:none;width:10px;height:10px;border-radius:50%;background:#027D4B"></span><span>Good</span></div>
+        <div style="color:#A3A3A3">—</div>
+        <div style="color:#A3A3A3">—</div>
+        <div style="color:#A3A3A3">—</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:12px;min-width:0;padding:12px 18px;align-items:center">
+        <div style="font-weight:600">Availability / connectivity</div>
+        <div style="color:#A3A3A3">—</div>
+        <div style="color:#A3A3A3">—</div>
+        <div style="color:#A3A3A3">—</div>
+        <div style="color:#A3A3A3">—</div>
+        <div style="display:flex;align-items:center;gap:6px"><span style="flex:none;width:10px;height:10px;border-radius:50%;background:#027D4B"></span><span>Online</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span style="flex:none;width:10px;height:10px;border-radius:50%;background:#858585"></span><span>Offline</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span style="flex:none;width:10px;height:10px;border-radius:2px;background:repeating-linear-gradient(135deg,#E8E8E8 0 2px,#858585 2px 3px)"></span><span>Unknown</span></div>
+        <div style="color:#A3A3A3">—</div>
+      </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:14px;font-size:14px;line-height:1.5;color:#3D3D3D">
+      <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px"><div><b style="color:#1A1A1A">Offline is not an error.</b> A powered-down laptop is neutral gray. Only make it red when the product has decided that offline is a problem — and then call the state something else (“Unreachable”).</div></div>
+      <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px"><div><b style="color:#1A1A1A">Four severity levels max in one chart.</b> A stacked bar of critical · high · medium · low is legible; adding “informational” as a fifth warm step is not — use neutral for it.</div></div>
+      <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px"><div><b style="color:#1A1A1A">Map by key, not by position.</b> A series called “Medium” resolves to <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">dataviz.status.medium</span> even when it is the only series in the chart.</div></div>
+    </div>
+  </section>
+
+  <section id="rules" style="margin-top:56px">
+    <h2 style="font-size:24px;margin:0 0 6px;font-weight:700">3 · Rules</h2>
+    <p style="margin:0 0 18px;color:#525252;font-size:15px;line-height:1.5;max-width:760px;text-wrap:pretty">Short, checkable, and tagged. A chart that breaks one of these is a bug, not a taste difference.</p>
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;font-size:14px;line-height:1.5;color:#3D3D3D">
+      <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px;display:grid;gap:8px">
+        <b style="color:#1A1A1A;font-size:15px">One palette per chart</b>
+        <div>A donut is categorical <em>or</em> status, never both. If a chart needs to show “which group” and “how healthy”, split it: color for one, position or a second chart for the other.</div>
+      </div>
+      <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px;display:grid;gap:8px">
+        <b style="color:#1A1A1A;font-size:15px">Use categorical colors in order</b>
+        <div>1 → 2 → 3 …, stop at the count you need. Never skip to a “nicer” color. Order is what guarantees adjacent contrast and color-blind separation.</div>
+      </div>
+      <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px;display:grid;gap:8px">
+        <b style="color:#1A1A1A;font-size:15px">Same entity, same color, whole page</b>
+        <div>If Printers are copper in the inventory bar, Printers are copper in the crash trend. Decide the binding once per page (or per product area) and write it in the spec.</div>
+      </div>
+      <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px;display:grid;gap:8px">
+        <b style="color:#1A1A1A;font-size:15px">Green is for good. Only good.</b>
+        <div>Never use green as the “low” end of a severity scale, as a categorical color in a chart that also shows health, or for “complete” unless completion is the positive outcome.</div>
+      </div>
+      <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px;display:grid;gap:8px">
+        <b style="color:#1A1A1A;font-size:15px">Color is never the only channel</b>
+        <div>Direct labels or a legend for every series; markers or dash patterns when more than 4 lines overlap; a hatch for “no data”; arrows on deltas. Color confirms — text and shape carry.</div>
+      </div>
+      <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px;display:grid;gap:8px">
+        <b style="color:#1A1A1A;font-size:15px">Labels on fills use the token’s label color</b>
+        <div>Every fill token carries a companion label color (white or ink) that reaches 4.5:1. In Highcharts set <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">dataLabels.style.color</span> from it — do not rely on the default <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">contrast</span> heuristic in dark mode.</div>
+      </div>
+      <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px;display:grid;gap:8px">
+        <b style="color:#1A1A1A;font-size:15px">Blue in a chart is data, not a link</b>
+        <div>Categorical 1 and the info state use the data blue (<span style="font-family:'IBM Plex Mono',monospace;font-size:12px">#3363D2</span>), not the brand blue. Do not place clickable text in brand blue inside a chart card that uses blue fills.</div>
+      </div>
+      <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px;display:grid;gap:8px">
+        <b style="color:#1A1A1A;font-size:15px">Dark mode is a token switch, not a filter</b>
+        <div>Every token has a light and a dark value. Read the mode value; never invert, lighten or set opacity on the light value at runtime.</div>
+      </div>
+    </div>
+  </section>
+  <section id="a11y" style="margin-top:56px">
+    <h2 style="font-size:24px;margin:0 0 6px;font-weight:700">4 · Accessibility bar</h2>
+    <p style="margin:0 0 18px;color:#525252;font-size:15px;line-height:1.5;max-width:760px;text-wrap:pretty">EN 301 549 (the European accessibility standard behind the EAA) points at WCAG 2.1 AA. These are the criteria that touch charts, and how the palettes meet them.</p>
+    <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;overflow:hidden;font-size:14px;line-height:1.5">
+      <div style="display:grid;grid-template-columns:200px 1fr 1.2fr;background:#F5F5F5;color:#525252;font-size:12px;font-weight:600;padding:10px 18px;border-bottom:1px solid #E8E8E8"><div>Criterion</div><div>What it asks</div><div>How we meet it</div></div>
+      <div style="display:grid;grid-template-columns:200px 1fr 1.2fr;padding:12px 18px;border-bottom:1px solid #E8E8E8;gap:16px"><div><b>1.4.11</b> Non-text contrast</div><div>Graphical parts needed to understand content reach 3:1 against adjacent colors.</div><div>Every categorical and status fill is ≥ 3:1 against its surface in both modes (values on the Palettes page). Adjacent stacked segments are separated by a 1px surface-colored border so neighbours never have to contrast with each other.</div></div>
+      <div style="display:grid;grid-template-columns:200px 1fr 1.2fr;padding:12px 18px;border-bottom:1px solid #E8E8E8;gap:16px"><div><b>1.4.3</b> Contrast (minimum)</div><div>Text reaches 4.5:1 (3:1 at ≥ 24px / 19px bold).</div><div>Axis labels, legends and tooltips use chrome tokens at ≥ 4.5:1. Labels on fills use the token’s companion label color. Trend-delta text colors pass as text.</div></div>
+      <div style="display:grid;grid-template-columns:200px 1fr 1.2fr;padding:12px 18px;border-bottom:1px solid #E8E8E8;gap:16px"><div><b>1.4.1</b> Use of color</div><div>Color is not the only way to convey information.</div><div>Legends or direct labels always present; “no data” is hatched; deltas carry arrows; lines beyond four series get markers or dashes; tables show the state name next to the dot.</div></div>
+      <div style="display:grid;grid-template-columns:200px 1fr 1.2fr;padding:12px 18px;border-bottom:1px solid #E8E8E8;gap:16px"><div><b>Color vision</b> (best practice)</div><div>Not a WCAG criterion, but ~8% of men are affected.</div><div>Palette order alternates lightness so deuteranopes and protanopes separate neighbours; sequential and multi-hue ramps change lightness monotonically; simulations are shown per swatch on the Palettes page.</div></div>
+      <div style="display:grid;grid-template-columns:200px 1fr 1.2fr;padding:12px 18px;gap:16px"><div><b>Sequential exception</b></div><div>The lightest 2 steps of a ramp are below 3:1 by nature.</div><div>Ramps are read relatively, so cells get a gap or hairline border, the legend shows the full ramp with labels, and no threshold that matters lives in a step under 3:1.</div></div>
+    </div>
+  </section>
+
+  <section id="eng" style="margin-top:56px">
+    <h2 style="font-size:24px;margin:0 0 6px;font-weight:700">5 · Implementation notes for Highcharts</h2>
+    <p style="margin:0 0 18px;color:#525252;font-size:15px;line-height:1.5;max-width:760px;text-wrap:pretty">Tokens are the API. Charts read them; nobody types a hex.</p>
+    <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px">
+      <div style="background:#1A1A1A;color:#E8E8E8;border-radius:12px;padding:18px 20px;font-family:'IBM Plex Mono',monospace;font-size:12.5px;line-height:1.6;overflow:auto">
+<div style="color:#A3A3A3">// tokens/dataviz.tokens.json → resolved for the current mode</div>
+<div>const t = resolveTokens(tokens, mode); <span style="color:#A3A3A3">// 'light' | 'dark'</span></div>
+<div>&nbsp;</div>
+<div style="color:#A3A3A3">// Global default: categorical order + chrome</div>
+<div>Highcharts.setOptions({</div>
+<div>&nbsp;&nbsp;colors: t.categorical, <span style="color:#A3A3A3">// 10 hex values, in order</span></div>
+<div>&nbsp;&nbsp;chart: { backgroundColor: 'transparent', style: { fontFamily: 'inherit' } },</div>
+<div>&nbsp;&nbsp;xAxis: { lineColor: t.chrome.axis, tickColor: t.chrome.axis, labels: { style: { color: t.chrome.label } } },</div>
+<div>&nbsp;&nbsp;yAxis: { gridLineColor: t.chrome.grid, labels: { style: { color: t.chrome.label } } },</div>
+<div>&nbsp;&nbsp;legend: { itemStyle: { color: t.chrome.title } },</div>
+<div>&nbsp;&nbsp;tooltip: { backgroundColor: t.chrome.tooltipBg, style: { color: t.chrome.tooltipText } },</div>
+<div>&nbsp;&nbsp;plotOptions: { series: { borderColor: t.surface, borderWidth: 1 } }</div>
+<div>});</div>
+<div>&nbsp;</div>
+<div style="color:#A3A3A3">// Status: bind by key, never by index</div>
+<div>series: alerts.map(s =&gt; ({</div>
+<div>&nbsp;&nbsp;name: s.label, data: s.values,</div>
+<div>&nbsp;&nbsp;color: t.status[s.severity].hex, <span style="color:#A3A3A3">// 'critical' | 'high' | …</span></div>
+<div>&nbsp;&nbsp;dataLabels: { style: { color: t.status[s.severity].label } }</div>
+<div>}))</div>
+<div>&nbsp;</div>
+<div style="color:#A3A3A3">// No data: hatch via modules/pattern-fill.js</div>
+<div>color: { pattern: { path: 'M 0 0 L 8 8', color: t.status.noneHatch, width: 8, height: 8, backgroundColor: t.status.none.hex } }</div>
+      </div>
+      <div style="display:grid;gap:12px;font-size:14px;line-height:1.5;color:#3D3D3D;align-content:start">
+        <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px"><b style="color:#1A1A1A">Token shape.</b> <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">dataviz.&lt;palette&gt;.&lt;key&gt;</span> with a <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">$value</span> of <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">{ light, dark }</span> (DTCG format). Ramps are numbered from lightest/lowest: <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">sequential.blue-7-1 … 7</span>.</div>
+        <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px"><b style="color:#1A1A1A">Mode switch.</b> Re-resolve tokens and call <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">chart.update(themeFor(mode))</span>. Do not toggle CSS filters on the SVG.</div>
+        <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px"><b style="color:#1A1A1A">Sequential and heatmap.</b> Use <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">colorAxis.dataClasses</span> with 5 or 7 classes taken from the ramp — not <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">stops</span> interpolation, which produces unnamed in-between colors that no legend can describe.</div>
+        <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px"><b style="color:#1A1A1A">Emphasis.</b> Set <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">color: t.emphasis.muted</span> on context series and <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">t.emphasis.primary</span> on the highlighted one; reference bands use <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">plotBands.color = t.emphasis.faint</span>.</div>
+        <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px"><b style="color:#1A1A1A">Load the accessibility module.</b> <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">modules/accessibility.js</span> adds keyboard navigation and screen-reader descriptions; color work alone does not make a chart accessible.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pm" style="margin-top:56px">
+    <h2 style="font-size:24px;margin:0 0 6px;font-weight:700">6 · What a spec has to say about color</h2>
+    <p style="margin:0 0 18px;color:#525252;font-size:15px;line-height:1.5;max-width:760px;text-wrap:pretty">Four sentences in the spec remove most color debates.</p>
+    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;font-size:14px;line-height:1.5;color:#3D3D3D">
+      <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px"><div style="font-size:28px;font-weight:700;color:#3363D2;letter-spacing:-.02em">1</div><b style="color:#1A1A1A">What does color encode?</b><div style="margin-top:4px">“Color = device type” or “color = alert severity”. One answer per chart.</div></div>
+      <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px"><div style="font-size:28px;font-weight:700;color:#3363D2;letter-spacing:-.02em">2</div><b style="color:#1A1A1A">Is there a judgement?</b><div style="margin-top:4px">If yes, name the good end and the bad end, and say whether “higher” is better. That decides Status vs. Diverging vs. Trend colors.</div></div>
+      <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px"><div style="font-size:28px;font-weight:700;color:#3363D2;letter-spacing:-.02em">3</div><b style="color:#1A1A1A">How many values, worst case?</b><div style="margin-top:4px">Above 7 categories the design must group a tail into “Other” — say what goes in it.</div></div>
+      <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px"><div style="font-size:28px;font-weight:700;color:#3363D2;letter-spacing:-.02em">4</div><b style="color:#1A1A1A">What are the thresholds?</b><div style="margin-top:4px">For status bands and gauges: the exact cut-offs (e.g. &gt; 90% memory = critical) so colors are computed, not eyeballed.</div></div>
+    </div>
+  </section>
+
+  <section style="margin-top:56px;background:#fff;border:1px solid #E4EEFA;border-radius:14px;padding:22px 24px;font-size:14px;line-height:1.55;color:#3D3D3D">
+    <div style="font-weight:700;color:#1A1A1A;font-size:16px;margin-bottom:8px">Where to go next</div>
+    <div>See every rule applied on live Highcharts output in the <a href="Chart Gallery.dc.html">Chart gallery</a>, or grab values from the <a href="Palettes.dc.html">Palettes</a> page and the <a href="Swatch Sheet.dc.html">Swatch sheet</a> (tokens.json download).</div>
+  </section>
+</div>
+</x-dc>
+</body>
+</html>

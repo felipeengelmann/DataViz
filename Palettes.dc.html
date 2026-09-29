@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F2F6FD;color:#1A1A1A;font-family:'Albert Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#024AD8;text-decoration:none}a:hover{color:#103FB2;text-decoration:underline}
+</style>
+</helmet>
+<div style="max-width:2300px;margin:0 auto;padding:0 clamp(20px,3vw,56px) 80px">
+  <nav style="display:flex;align-items:center;gap:24px;min-height:64px;border-bottom:1px solid #E4EEFA;flex-wrap:wrap">
+    <a href="Start Here.dc.html" style="display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;color:#1A1A1A;text-decoration:none">
+      <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#3363D2"></span>
+      <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#D07B48;margin-left:-6px"></span>
+      <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#10918C;margin-left:-6px"></span>
+      <span style="margin-left:4px">Data Viz Colors</span>
+    </a>
+    <div style="display:flex;gap:20px;font-size:14px;font-weight:500;flex-wrap:wrap">
+      <a href="Start Here.dc.html" style="color:#525252;padding:22px 0">Start here</a>
+      <a href="Guidelines.dc.html" style="color:#525252;padding:22px 0">Guidelines</a>
+      <a href="Palettes.dc.html" style="color:#1A1A1A;border-bottom:2px solid #024AD8;padding:22px 0">Palettes</a>
+      <a href="Chart Gallery.dc.html" style="color:#525252;padding:22px 0">Chart gallery</a>
+      <a href="Audit Kit.dc.html" style="color:#525252;padding:22px 0">Audit kit</a>
+      <a href="Swatch Sheet.dc.html" style="color:#525252;padding:22px 0">Swatch sheet</a>
+    </div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:8px;font-size:13px;color:#525252">
+      <span>Specimen surface</span>
+      <div style="display:flex;border:1px solid #C9E0FC;border-radius:999px;padding:2px;background:#fff">
+        <button onClick="{{ setLight }}" style="border:0;border-radius:999px;padding:6px 14px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;background: {{ lightBtnBg }};color: {{ lightBtnFg }}">Light</button>
+        <button onClick="{{ setDark }}" style="border:0;border-radius:999px;padding:6px 14px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;background: {{ darkBtnBg }};color: {{ darkBtnFg }}">Dark</button>
+      </div>
+    </div>
+  </nav>
+
+  <header style="padding:48px 0 24px;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:40px;align-items:end">
+    <div>
+      <div style="font-size:13px;font-weight:600;color:#024AD8;letter-spacing:.04em;text-transform:uppercase">Data viz library · palette expansion</div>
+      <h1 style="font-size:40px;line-height:1.1;margin:10px 0 14px;font-weight:700;letter-spacing:-.01em;text-wrap:pretty">Ten categorical colors, a status scale that reads in order, sequential and diverging ramps, and an emphasis technique — in light and dark.</h1>
+      <p style="font-size:16px;line-height:1.55;color:#525252;margin:0;max-width:640px;text-wrap:pretty">Every fill meets WCAG 2.1 AA non-text contrast (3:1) against its chart surface, which is what EN 301 549 (the European accessibility standard) requires. Label colors are pre-computed so text on fills reaches 4.5:1. Existing system colors stay untouched; status values are drawn from them.</p>
+    </div>
+    <aside style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:20px 22px;font-size:14px;line-height:1.5;color:#3D3D3D">
+      <div style="font-weight:700;margin-bottom:8px;color:#1A1A1A">Assumptions I made</div>
+      <ul style="margin:0;padding-left:18px;display:grid;gap:6px">
+        <li>Chart surfaces are white in light mode and <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">#212121</span> containers in dark mode, per the system tokens.</li>
+        <li>Blue stays the interactive color, so categorical #1 is a softer, brand-adjacent blue rather than <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">#024AD8</span>.</li>
+        <li>Categorical and status palettes are never mixed in one chart — that rule is what lets both stay expressive.</li>
+        <li>Color-blind safety is “balanced”: neighbours in palette order stay apart under deuteranopia and protanopia; the first five are the safest subset.</li>
+      </ul>
+    </aside>
+  </header>
+
+  <section id="categorical" style="margin-top:32px">
+    <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:6px">
+      <h2 style="font-size:24px;margin:0;font-weight:700">Categorical</h2>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#636363">dataviz.categorical.01–10</span>
+    </div>
+    <p style="margin:0 0 18px;color:#525252;font-size:15px;line-height:1.5;max-width:760px;text-wrap:pretty">Unordered groups: device types, apps, regions, OS versions. Warm and cool hues alternate so stacked neighbours contrast; lightness alternates deep/mid so the order survives color-vision deficiency. Use colors in order and stop at the count you need — never skip or shuffle.</p>
+    <div style="background: {{ surface }};border-radius:14px;padding:24px;border:1px solid #E4EEFA">
+      <div style="display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:10px">
+        <sc-for list="{{ cat }}" as="c" hint-placeholder-count="10">
+          <div style="min-width:0">
+            <div style="height:88px;border-radius:8px;background: {{ c.hex }};display:flex;align-items:flex-end;padding:8px;color: {{ c.label }};font-weight:700;font-size:14px">{{ c.idx }}</div>
+            <div style="margin-top:10px;font-size:13px;font-weight:600;text-transform:capitalize;color: {{ surfaceInk }}">{{ c.name }}</div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color: {{ surfaceMuted }}">{{ c.hex }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:10px;margin-top:22px">
+        <sc-for list="{{ cat }}" as="c" hint-placeholder-count="10">
+          <div style="min-width:0;font-size:11px;color: {{ surfaceMuted }};line-height:1.45">
+            <div style="display:flex;gap:3px;height:14px;border-radius:4px;overflow:hidden">
+              <div style="flex:1;background: {{ c.hex }}"></div>
+              <div style="flex:1;background: {{ c.deutan }}"></div>
+              <div style="flex:1;background: {{ c.protan }}"></div>
+              <div style="flex:1;background: {{ c.tritan }}"></div>
+            </div>
+            <div style="margin-top:6px"><span style="font-weight:600;color: {{ surfaceInk }}">{{ c.bg }}:1</span> vs surface</div>
+            <div>label <span style="font-family:'IBM Plex Mono',monospace">{{ c.labelName }}</span> {{ c.labelRatio }}:1</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="margin-top:14px;font-size:12px;color: {{ surfaceMuted }}">Strips: normal · deuteranopia · protanopia · tritanopia (Machado 2009 simulation). “vs surface” is WCAG non-text contrast against this specimen surface.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:14px;font-size:14px;line-height:1.5;color:#3D3D3D">
+      <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px"><b style="color:#1A1A1A">1–5 for most charts.</b> Blue, copper, teal, magenta, moss are the highest-separation subset in every simulation. If a chart needs more than 7 series, group the tail into “Other” (color 10, slate).</div>
+      <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px"><b style="color:#1A1A1A">Dark mode is a separate set,</b> not the light set inverted. Each color is lightened until it clears 3:1 on <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">#212121</span>; labels on fills switch to dark ink.</div>
+      <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px"><b style="color:#1A1A1A">Colors keep their meaning across charts on a page.</b> If “Printers” is copper in the donut, it is copper in the trend line. Bind colors to category keys, not to series index.</div>
+    </div>
+  </section>
+
+  <section id="status" style="margin-top:56px">
+    <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:6px">
+      <h2 style="font-size:24px;margin:0;font-weight:700">Status</h2>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#636363">dataviz.status.*</span>
+    </div>
+    <p style="margin:0 0 18px;color:#525252;font-size:15px;line-height:1.5;max-width:760px;text-wrap:pretty">One ordered severity scale — critical → high → medium → low — that darkens and warms as it gets worse, plus three outcome colors. Green means <em>good</em> and nothing else; gray means <em>no judgement</em>. All eight values are existing system primitives (or the data blue), so chips, badges and charts agree.</p>
+    <div style="background: {{ surface }};border-radius:14px;padding:24px;border:1px solid #E4EEFA">
+      <div style="display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:10px">
+        <sc-for list="{{ status }}" as="c" hint-placeholder-count="8">
+          <div style="min-width:0">
+            <div style="height:88px;border-radius:8px;background: {{ c.hex }};display:flex;align-items:flex-end;padding:8px;color: {{ c.label }};font-weight:700;font-size:13px;position:relative;overflow:hidden">
+              <sc-if value="{{ c.isNone }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent 0 6px,rgba(133,133,133,.9) 6px 8px)"></div>
+              </sc-if>
+              <span style="position:relative">{{ c.label_ }}</span>
+            </div>
+            <div style="margin-top:10px;font-size:12px;font-weight:600;color: {{ surfaceInk }};font-family:'IBM Plex Mono',monospace">{{ c.key }}</div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color: {{ surfaceMuted }}">{{ c.hex }}</div>
+            <div style="font-size:11px;color: {{ surfaceMuted }};margin-top:4px"><span style="font-weight:600;color: {{ surfaceInk }}">{{ c.bg }}:1</span> vs surface · label {{ c.labelName }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="margin-top:22px;display:grid;grid-template-columns:120px minmax(0,1fr);gap:10px 16px;font-size:13px;color: {{ surfaceInk }}">
+        <div style="color: {{ surfaceMuted }}">Severity</div>
+        <div style="display:flex;height:28px;border-radius:6px;overflow:hidden;font-size:12px;font-weight:600">
+          <sc-for list="{{ severityRamp }}" as="s" hint-placeholder-count="4"><div style="flex:1;background: {{ s.hex }};color: {{ s.label }};display:flex;align-items:center;padding:0 10px">{{ s.label_ }}</div></sc-for>
+          <div style="flex:1;background: {{ neutralHex }};color: {{ neutralLabel }};display:flex;align-items:center;padding:0 10px">None</div>
+        </div>
+        <div style="color: {{ surfaceMuted }}">Outcome</div>
+        <div style="display:flex;gap:8px">
+          <sc-for list="{{ outcomeRow }}" as="s" hint-placeholder-count="3"><div style="display:flex;align-items:center;gap:8px;padding:5px 12px 5px 8px;border-radius:999px;border:1px solid {{ surfaceLine }}"><span style="width:10px;height:10px;border-radius:50%;background: {{ s.hex }}"></span>{{ s.label_ }}</div></sc-for>
+        </div>
+        <div style="color: {{ surfaceMuted }}">Utilization</div>
+        <div style="display:flex;gap:8px">
+          <sc-for list="{{ utilRow }}" as="s" hint-placeholder-count="4"><div style="display:flex;align-items:center;gap:8px;padding:5px 12px 5px 8px;border-radius:999px;border:1px solid {{ surfaceLine }}"><span style="width:10px;height:10px;border-radius:50%;background: {{ s.hex }}"></span>{{ s.label_ }}</div></sc-for>
+        </div>
+        <div style="color: {{ surfaceMuted }}">Availability</div>
+        <div style="display:flex;gap:8px">
+          <sc-for list="{{ availRow }}" as="s" hint-placeholder-count="3"><div style="display:flex;align-items:center;gap:8px;padding:5px 12px 5px 8px;border-radius:999px;border:1px solid {{ surfaceLine }}"><span style="width:10px;height:10px;border-radius:50%;background: {{ s.hex }}"></span>{{ s.label_ }}</div></sc-for>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:14px;font-size:14px;line-height:1.5;color:#3D3D3D">
+      <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px"><b style="color:#1A1A1A">Why the old set felt odd:</b> red → orange → yellow → green → gray put a “good” color inside a severity ramp, so “low” read as “fine”. Here low is a gold that is still clearly a warning, and green only appears when the outcome is positive.</div>
+      <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px"><b style="color:#1A1A1A">Critical uses the system’s critical pink-red,</b> one step darker than high in light mode so the two never blur in a stacked bar. Dark mode uses the system’s dark critical and negative bases as-is.</div>
+      <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;padding:16px 18px"><b style="color:#1A1A1A">Light-mode low is <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">#BA7E15</span>, not the caution yellow.</b> Yellow-3 is 1.9:1 on white and fails as a fill; chips keep yellow because they pair a tint background with dark text.</div>
+    </div>
+  </section>
+  <section id="sequential" style="margin-top:56px">
+    <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:6px">
+      <h2 style="font-size:24px;margin:0;font-weight:700">Sequential</h2>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#636363">dataviz.sequential.blue-7-* · blue-5-*</span>
+    </div>
+    <p style="margin:0 0 18px;color:#525252;font-size:15px;line-height:1.5;max-width:760px;text-wrap:pretty">One quantity, low → high: device counts by region, utilization %, age of hardware. Single-hue brand blue with evenly spaced perceptual lightness steps (OKLCH). Pick 5 steps for binned legends, 7 for heatmaps with more range. In dark mode the ramp runs dark → bright so “more” still reads as “brighter”.</p>
+    <div style="background: {{ surface }};border-radius:14px;padding:24px;border:1px solid #E4EEFA;display:grid;gap:22px">
+      <div>
+        <div style="font-size:12px;font-weight:600;color: {{ surfaceMuted }};margin-bottom:8px">7 steps</div>
+        <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px">
+          <sc-for list="{{ seq7 }}" as="c" hint-placeholder-count="7">
+            <div style="min-width:0"><div style="height:64px;border-radius:6px;background: {{ c.hex }};display:flex;align-items:flex-end;padding:6px;color: {{ c.label }};font-size:12px;font-weight:700">{{ c.idx }}</div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color: {{ surfaceMuted }};margin-top:6px">{{ c.hex }}</div></div>
+          </sc-for>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:600;color: {{ surfaceMuted }};margin-bottom:8px">5 steps</div>
+        <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;max-width:70%">
+          <sc-for list="{{ seq5 }}" as="c" hint-placeholder-count="5">
+            <div style="min-width:0"><div style="height:64px;border-radius:6px;background: {{ c.hex }};display:flex;align-items:flex-end;padding:6px;color: {{ c.label }};font-size:12px;font-weight:700">{{ c.idx }}</div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color: {{ surfaceMuted }};margin-top:6px">{{ c.hex }}</div></div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="font-size:12px;color: {{ surfaceMuted }}">The two lightest steps sit below 3:1 against the surface by design — sequential fills are read relative to each other, so give cells a 1–2px gap or a hairline border and never encode a critical threshold in the lightest step.</div>
+    </div>
+  </section>
+
+  <section id="diverging" style="margin-top:56px">
+    <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:6px">
+      <h2 style="font-size:24px;margin:0;font-weight:700">Diverging</h2>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#636363">dataviz.diverging.blue-copper-1…7</span>
+    </div>
+    <p style="margin:0 0 18px;color:#525252;font-size:15px;line-height:1.5;max-width:760px;text-wrap:pretty">A value against a midpoint: below / above benchmark, change vs. last period, deviation from a target. Blue and copper are the classic color-blind-safe pair and carry no good/bad meaning — use it when the direction is neutral. When the direction <em>is</em> a judgement (worse ↔ better), use the status palette’s negative and positive ends instead.</p>
+    <div style="background: {{ surface }};border-radius:14px;padding:24px;border:1px solid #E4EEFA">
+      <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px">
+        <sc-for list="{{ div7 }}" as="c" hint-placeholder-count="7">
+          <div style="min-width:0"><div style="height:64px;border-radius:6px;background: {{ c.hex }};display:flex;align-items:flex-end;padding:6px;color: {{ c.label }};font-size:12px;font-weight:700">{{ c.idx }}</div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color: {{ surfaceMuted }};margin-top:6px">{{ c.hex }}</div></div>
+        </sc-for>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color: {{ surfaceMuted }};margin-top:10px"><span>◂ below</span><span>midpoint</span><span>above ▸</span></div>
+    </div>
+  </section>
+
+  <section id="functional" style="margin-top:56px">
+    <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:6px">
+      <h2 style="font-size:24px;margin:0;font-weight:700">Functional palettes</h2>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#636363">dataviz.emphasis · binary · trend · chrome</span>
+    </div>
+    <p style="margin:0 0 18px;color:#525252;font-size:15px;line-height:1.5;max-width:760px;text-wrap:pretty">Small, purpose-built sets that reuse colors defined above — they exist so designers stop hand-picking grays and so developers have one token to reach for.</p>
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px">
+      <div style="background: {{ surface }};border-radius:14px;padding:22px 24px;border:1px solid #E4EEFA;color: {{ surfaceInk }}">
+        <div style="font-weight:700;font-size:16px">Emphasis</div>
+        <div style="font-size:13px;color: {{ surfaceMuted }};margin:4px 0 16px;line-height:1.5">One series matters, the rest are context. Primary highlight, optional secondary comparison, muted for context series, faint for reference bands and targets.</div>
+        <div style="display:flex;align-items:flex-end;gap:6px;height:96px;padding:0 4px;border-bottom:1px solid {{ surfaceLine }}">
+          <div style="flex:1;height:38%;background: {{ emMuted }};border-radius:4px 4px 0 0"></div>
+          <div style="flex:1;height:52%;background: {{ emMuted }};border-radius:4px 4px 0 0"></div>
+          <div style="flex:1;height:88%;background: {{ emPrimary }};border-radius:4px 4px 0 0"></div>
+          <div style="flex:1;height:44%;background: {{ emMuted }};border-radius:4px 4px 0 0"></div>
+          <div style="flex:1;height:64%;background: {{ emSecondary }};border-radius:4px 4px 0 0"></div>
+          <div style="flex:1;height:30%;background: {{ emMuted }};border-radius:4px 4px 0 0"></div>
+          <div style="flex:1;height:47%;background: {{ emMuted }};border-radius:4px 4px 0 0"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:14px;font-size:12px">
+          <div><div style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:3px;background: {{ emPrimary }}"></span>primary</div><div style="font-family:'IBM Plex Mono',monospace;color: {{ surfaceMuted }};font-size:11px">{{ emPrimary }}</div></div>
+          <div><div style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:3px;background: {{ emSecondary }}"></span>secondary</div><div style="font-family:'IBM Plex Mono',monospace;color: {{ surfaceMuted }};font-size:11px">{{ emSecondary }}</div></div>
+          <div><div style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:3px;background: {{ emMuted }}"></span>muted</div><div style="font-family:'IBM Plex Mono',monospace;color: {{ surfaceMuted }};font-size:11px">{{ emMuted }}</div></div>
+          <div><div style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:3px;background: {{ emFaint }}"></span>faint</div><div style="font-family:'IBM Plex Mono',monospace;color: {{ surfaceMuted }};font-size:11px">{{ emFaint }}</div></div>
+        </div>
+      </div>
+      <div style="background: {{ surface }};border-radius:14px;padding:22px 24px;border:1px solid #E4EEFA;color: {{ surfaceInk }}">
+        <div style="font-weight:700;font-size:16px">Binary</div>
+        <div style="font-size:13px;color: {{ surfaceMuted }};margin:4px 0 16px;line-height:1.5">Two states. Neutral pairs (managed / unmanaged, Windows / macOS) take categorical 1 and 2. Judged pairs (compliant / non-compliant, passed / failed) take positive and negative from status.</div>
+        <div style="display:grid;gap:10px">
+          <div style="display:flex;height:28px;border-radius:6px;overflow:hidden;font-size:12px;font-weight:600">
+            <div style="flex:0 0 62%;min-width:0;background: {{ binA }};color: {{ binALabel }};display:flex;align-items:center;padding:0 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Managed 62%</div>
+            <div style="flex:1;min-width:0;background: {{ binB }};color: {{ binBLabel }};display:flex;align-items:center;padding:0 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Unmanaged</div>
+          </div>
+          <div style="display:flex;height:28px;border-radius:6px;overflow:hidden;font-size:12px;font-weight:600">
+            <div style="flex:0 0 72%;min-width:0;background: {{ binYes }};color: {{ binYesLabel }};display:flex;align-items:center;padding:0 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Compliant 72%</div>
+            <div style="flex:1;min-width:0;background: {{ binNo }};color: {{ binNoLabel }};display:flex;align-items:center;padding:0 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Failing</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:14px;font-size:12px">
+          <div><div style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:3px;background: {{ binA }}"></span>a</div><div style="font-family:'IBM Plex Mono',monospace;color: {{ surfaceMuted }};font-size:11px">{{ binA }}</div></div>
+          <div><div style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:3px;background: {{ binB }}"></span>b</div><div style="font-family:'IBM Plex Mono',monospace;color: {{ surfaceMuted }};font-size:11px">{{ binB }}</div></div>
+          <div><div style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:3px;background: {{ binYes }}"></span>yes</div><div style="font-family:'IBM Plex Mono',monospace;color: {{ surfaceMuted }};font-size:11px">{{ binYes }}</div></div>
+          <div><div style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:3px;background: {{ binNo }}"></span>no</div><div style="font-family:'IBM Plex Mono',monospace;color: {{ surfaceMuted }};font-size:11px">{{ binNo }}</div></div>
+        </div>
+      </div>
+      <div style="background: {{ surface }};border-radius:14px;padding:22px 24px;border:1px solid #E4EEFA;color: {{ surfaceInk }}">
+        <div style="font-weight:700;font-size:16px">Trend deltas</div>
+        <div style="font-size:13px;color: {{ surfaceMuted }};margin:4px 0 16px;line-height:1.5">Color encodes <em>valence</em>, the arrow encodes <em>direction</em>. A crash count that fell is green with a down arrow. All three pass 4.5:1 as text.</div>
+        <div style="display:flex;flex-wrap:wrap;gap:16px 24px;align-items:baseline">
+          <div><div style="font-size:30px;font-weight:700;letter-spacing:-.02em;white-space:nowrap">98 <span style="font-size:15px;color: {{ trUp }}">↗ 3</span></div><div style="font-size:12px;color: {{ surfaceMuted }}">Sentiment</div></div>
+          <div><div style="font-size:30px;font-weight:700;letter-spacing:-.02em;white-space:nowrap">1.2K <span style="font-size:15px;color: {{ trUp }}">↘ 18%</span></div><div style="font-size:12px;color: {{ surfaceMuted }}">Crashes · lower is better</div></div>
+          <div><div style="font-size:30px;font-weight:700;letter-spacing:-.02em;white-space:nowrap">70 <span style="font-size:15px;color: {{ trDown }}">↘ 2</span></div><div style="font-size:12px;color: {{ surfaceMuted }}">OS performance</div></div>
+          <div><div style="font-size:30px;font-weight:700;letter-spacing:-.02em;white-space:nowrap">94 <span style="font-size:15px;color: {{ trFlat }}">→ 0</span></div><div style="font-size:12px;color: {{ surfaceMuted }}">Security</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:16px;font-size:12px">
+          <div><div style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:3px;background: {{ trUp }}"></span>up (better)</div><div style="font-family:'IBM Plex Mono',monospace;color: {{ surfaceMuted }};font-size:11px">{{ trUp }}</div></div>
+          <div><div style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:3px;background: {{ trDown }}"></span>down (worse)</div><div style="font-family:'IBM Plex Mono',monospace;color: {{ surfaceMuted }};font-size:11px">{{ trDown }}</div></div>
+          <div><div style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:3px;background: {{ trFlat }}"></span>flat</div><div style="font-family:'IBM Plex Mono',monospace;color: {{ surfaceMuted }};font-size:11px">{{ trFlat }}</div></div>
+        </div>
+      </div>
+      <div style="background: {{ surface }};border-radius:14px;padding:22px 24px;border:1px solid #E4EEFA;color: {{ surfaceInk }}">
+        <div style="font-weight:700;font-size:16px">Chart chrome</div>
+        <div style="font-size:13px;color: {{ surfaceMuted }};margin:4px 0 16px;line-height:1.5">Gridlines, axes and labels are deliberately quiet so data colors carry the chart. Labels pass 4.5:1; gridlines stay under it on purpose.</div>
+        <div style="position:relative;height:96px;border-left:1px solid {{ chAxis }};border-bottom:1px solid {{ chAxis }};margin-left:28px">
+          <div style="position:absolute;left:0;right:0;top:0;border-top:1px solid {{ chGrid }}"></div>
+          <div style="position:absolute;left:0;right:0;top:33%;border-top:1px solid {{ chGrid }}"></div>
+          <div style="position:absolute;left:0;right:0;top:66%;border-top:1px solid {{ chGrid }}"></div>
+          <div style="position:absolute;left:-28px;top:-6px;font-size:11px;color: {{ chLabel }}">25K</div>
+          <div style="position:absolute;left:-28px;top:60%;font-size:11px;color: {{ chLabel }}">10K</div>
+          <div style="position:absolute;left:-6px;bottom:-18px;font-size:11px;color: {{ chLabel }}">Aug</div>
+          <div style="position:absolute;right:0;bottom:-18px;font-size:11px;color: {{ chLabel }}">Oct</div>
+          <div style="position:absolute;right:12px;top:8px;background: {{ chTooltipBg }};color: {{ chTooltipText }};font-size:11px;padding:6px 8px;border-radius:6px">Sep 18 · <b>18.2K</b></div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:30px;font-size:12px">
+          <div><div style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:3px;background: {{ chGrid }};border:1px solid {{ surfaceLine }}"></span>grid</div><div style="font-family:'IBM Plex Mono',monospace;color: {{ surfaceMuted }};font-size:11px">{{ chGrid }}</div></div>
+          <div><div style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:3px;background: {{ chAxis }}"></span>axis</div><div style="font-family:'IBM Plex Mono',monospace;color: {{ surfaceMuted }};font-size:11px">{{ chAxis }}</div></div>
+          <div><div style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:3px;background: {{ chLabel }}"></span>label</div><div style="font-family:'IBM Plex Mono',monospace;color: {{ surfaceMuted }};font-size:11px">{{ chLabel }}</div></div>
+          <div><div style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:3px;background: {{ chTitle }};border:1px solid {{ surfaceLine }}"></span>title</div><div style="font-family:'IBM Plex Mono',monospace;color: {{ surfaceMuted }};font-size:11px">{{ chTitle }}</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <details id="held" style="margin-top:56px;background:#fff;border:1px solid #E4EEFA;border-radius:14px;padding:18px 22px">
+    <summary style="cursor:pointer;display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:18px;font-weight:700">Held in v1: Multi-hue and Heatmap severity <span style="font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;background:#FFE9D9;color:#602700">Not for new charts</span></summary>
+    <div style="margin-top:14px;display:grid;gap:8px;font-size:14px;line-height:1.55;color:#3D3D3D;max-width:820px">
+      <div><b>Multi-hue</b> is only recommended for dense heatmaps, and its hues clash with categorical colors on the same dashboard. Use the 7-step Sequential ramp instead.</div>
+      <div><b>Heatmap severity</b> shows the same meaning as Status with a second set of reds. Use Status classes (critical → low) for severity heatmaps.</div>
+      <div style="color:#636363">The tokens stay in tokens.json, marked as held, so existing charts don’t break while they are migrated. A held palette can return through a registry request. See the <a href="Palette Proposal.dc.html">palette decision</a>.</div>
+    </div>
+  <section id="multihue" style="margin-top:28px">
+    <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:6px">
+      <h2 style="font-size:24px;margin:0;font-weight:700">Multi-hue sequential</h2>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#636363">dataviz.multihue.7-1…7 · same values in both modes</span>
+    </div>
+    <p style="margin:0 0 18px;color:#525252;font-size:15px;line-height:1.5;max-width:760px;text-wrap:pretty">Dense, continuous data where a single hue runs out of distinguishable steps: large heatmaps, density plots, geographic detail. Lightness rises monotonically from indigo to pale yellow, so the order survives every color-vision deficiency, and hue adds resolution. Because the ends are dark and light, one scale serves both modes.</p>
+    <div style="background: {{ surface }};border-radius:14px;padding:24px;border:1px solid #E4EEFA">
+      <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px">
+        <sc-for list="{{ multi7 }}" as="c" hint-placeholder-count="7">
+          <div style="min-width:0"><div style="height:64px;border-radius:6px;background: {{ c.hex }};display:flex;align-items:flex-end;padding:6px;color: {{ c.label }};font-size:12px;font-weight:700">{{ c.idx }}</div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color: {{ surfaceMuted }};margin-top:6px">{{ c.hex }}</div></div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section id="heatmap" style="margin-top:28px">
+    <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:6px">
+      <h2 style="font-size:24px;margin:0;font-weight:700">Heatmap · severity</h2>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#636363">dataviz.heatmap.severity-1…5</span>
+    </div>
+    <p style="margin:0 0 18px;color:#525252;font-size:15px;line-height:1.5;max-width:760px;text-wrap:pretty">Risk and severity matrices (likelihood × impact, alerts by group × week) where “more” means “worse”. The ramp walks the status hues — gold → orange → red → critical — so it agrees with status chips elsewhere on the page. For neutral intensity (counts, volume) use the blue sequential instead.</p>
+    <div style="background: {{ surface }};border-radius:14px;padding:24px;border:1px solid #E4EEFA">
+      <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;max-width:70%">
+        <sc-for list="{{ heat5 }}" as="c" hint-placeholder-count="5">
+          <div style="min-width:0"><div style="height:64px;border-radius:6px;background: {{ c.hex }};display:flex;align-items:flex-end;padding:6px;color: {{ c.label }};font-size:12px;font-weight:700">{{ c.idx }}</div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color: {{ surfaceMuted }};margin-top:6px">{{ c.hex }}</div></div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+  </details>
+
+
+  <section style="margin-top:56px;background:#fff;border:1px solid #E4EEFA;border-radius:14px;padding:22px 24px;font-size:14px;line-height:1.55;color:#3D3D3D">
+    <div style="font-weight:700;color:#1A1A1A;font-size:16px;margin-bottom:8px">Next steps</div>
+    <ul style="margin:0;padding-left:18px;display:grid;gap:6px">
+      <li>Read the <a href="Guidelines.dc.html">Guidelines</a> for the decision tree and role-specific rules, then the <a href="Chart Gallery.dc.html">Chart gallery</a> to see every palette on real Highcharts output in both modes.</li>
+      <li>Tokens ship as dataviz.tokens.json (download it from the <a href="Swatch Sheet.dc.html">swatch sheet</a>) (light + dark per token) and a <a href="Swatch Sheet.dc.html">swatch sheet</a> for Figma. If you prefer, the categorical and status values can be re-expressed as references to existing primitives (e.g. <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">primitives.color.pink8</span>).</li>
+      <li>Open questions: should categorical hues be reserved per entity across the product (e.g. PCs always blue)? Do gauges need a 3-band or 5-band threshold default?</li>
+    </ul>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;mode&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;'light' | 'dark'&quot;,&quot;section&quot;:&quot;Specimen&quot;}}">
+class Component extends DCLogic {
+  state = { P: null, mode: null };
+  componentDidMount() {
+    import('./palette-data.js').then(m => this.setState({ P: m.PALETTE })).catch(e => console.error('palette-data load failed', e));
+  }
+  renderVals() {
+    const P = this.state.P;
+    const mode = this.state.mode || this.props.mode || 'light';
+    const dark = mode === 'dark';
+    const vals = {
+      mode, surface: dark ? '#212121' : '#FFFFFF', surfaceInk: dark ? '#FFFFFF' : '#1A1A1A', surfaceMuted: dark ? '#A3A3A3' : '#636363',
+      surfaceLine: dark ? '#3D3D3D' : '#E8E8E8',
+      setLight: () => this.setState({ mode: 'light' }), setDark: () => this.setState({ mode: 'dark' }),
+      lightBtnBg: dark ? 'transparent' : '#1A1A1A', lightBtnFg: dark ? '#525252' : '#FFFFFF',
+      darkBtnBg: dark ? '#1A1A1A' : 'transparent', darkBtnFg: dark ? '#FFFFFF' : '#525252',
+    };
+    if (!P) {
+      const t = dark ? '#3D3D3D' : '#E8E8E8';
+      return Object.assign(vals, { cat: [], status: [], severityRamp: [], outcomeRow: [], utilRow: [], availRow: [], seq7: [], seq5: [], div7: [], multi7: [], heat5: [], neutralHex: t, neutralLabel: vals.surfaceInk,
+        emPrimary: t, emSecondary: t, emMuted: t, emFaint: t, binA: t, binB: t, binYes: t, binNo: t, binALabel: vals.surfaceInk, binBLabel: vals.surfaceInk, binYesLabel: vals.surfaceInk, binNoLabel: vals.surfaceInk,
+        trUp: vals.surfaceMuted, trDown: vals.surfaceMuted, trFlat: vals.surfaceMuted, chGrid: t, chAxis: t, chLabel: vals.surfaceMuted, chTitle: vals.surfaceInk, chTooltipBg: t, chTooltipText: vals.surfaceInk });
+    }
+    const labelName = c => c.label === '#FFFFFF' ? 'white' : 'ink';
+    const withMeta = (arr, prefix) => arr.map((c, i) => ({ ...c, idx: i + 1, token: `${prefix}.${String(i + 1).padStart(2, '0')}`, labelName: labelName(c) }));
+    vals.cat = withMeta(P.categorical[mode], 'dataviz.categorical').map((c, i) => ({ ...c, name: P.categorical.names[i] }));
+    vals.status = P.status.keys.map((k, i) => ({ ...P.status[mode][i], key: k, idx: i + 1, label_: P.status.labels[k], token: `dataviz.status.${k}`, labelName: labelName(P.status[mode][i]), isNone: k === 'none' }));
+    vals.hatch = P.status.hatch[mode];
+    const S = Object.fromEntries(vals.status.map(s => [s.key, s]));
+    const pick = (key, label_) => ({ ...S[key], label_ });
+    vals.severityRamp = [pick('critical', 'Critical'), pick('high', 'High'), pick('medium', 'Medium'), pick('low', 'Low')];
+    vals.neutralHex = S.neutral.hex; vals.neutralLabel = S.neutral.label;
+    vals.outcomeRow = [pick('positive', 'Positive'), pick('high', 'Negative'), pick('neutral', 'Neutral')];
+    vals.utilRow = [pick('info', 'Under-utilized'), pick('positive', 'Normal'), pick('medium', 'Over-utilized'), pick('critical', 'Critical')];
+    vals.availRow = [pick('positive', 'Online'), pick('neutral', 'Offline'), pick('none', 'Unknown')];
+    const ramp = (hexes, descs, prefix) => hexes.map((h, i) => ({ hex: h, idx: i + 1, token: `${prefix}-${i + 1}`, ...descs[i], labelName: labelName(descs[i]) }));
+    vals.seq7 = ramp(P.sequential[mode + '7'], P.sequential.desc[mode + '7'], 'dataviz.sequential.blue-7');
+    vals.seq5 = ramp(P.sequential[mode + '5'], P.sequential.desc[mode + '5'], 'dataviz.sequential.blue-5');
+    vals.div7 = ramp(P.diverging[mode + '7'], P.diverging.desc[mode + '7'], 'dataviz.diverging.blue-copper');
+    vals.multi7 = ramp(P.multihue7, P.multihue7desc[mode], 'dataviz.multihue.7');
+    vals.heat5 = ramp(P.heatSeverity[mode + '5'], P.heatSeverity.desc[mode + '5'], 'dataviz.heatmap.severity');
+    const e = P.emphasis[mode], b = P.binary[mode], t = P.trend[mode], ch = P.chrome[mode];
+    vals.binALabel = vals.cat[0].label; vals.binBLabel = vals.cat[1].label;
+    vals.binYesLabel = S.positive.label; vals.binNoLabel = S.high.label;
+    Object.assign(vals, { emPrimary: e.primary, emSecondary: e.secondary, emMuted: e.muted, emFaint: e.faint, binA: b.a, binB: b.b, binYes: b.yes, binNo: b.no, trUp: t.up, trDown: t.down, trFlat: t.flat,
+      chGrid: ch.grid, chAxis: ch.axis, chLabel: ch.label, chTitle: ch.title, chTooltipBg: ch.tooltipBg, chTooltipText: ch.tooltipText });
+    return vals;
+  }
+}
+</script>
+</body>
+</html>

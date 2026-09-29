@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F2F6FD;color:#1A1A1A;font-family:'Albert Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#024AD8;text-decoration:none}a:hover{color:#103FB2;text-decoration:underline}
+</style>
+</helmet>
+<div style="max-width:2300px;margin:0 auto;padding:0 clamp(20px,3vw,56px) 80px">
+  <nav style="display:flex;align-items:center;gap:24px;height:64px;border-bottom:1px solid #E4EEFA;flex-wrap:wrap">
+    <a href="Start Here.dc.html" style="display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;color:#1A1A1A">
+      <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#3363D2"></span>
+      <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#D07B48;margin-left:-6px"></span>
+      <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#10918C;margin-left:-6px"></span>
+      <span style="margin-left:4px">Data Viz Colors</span>
+    </a>
+    <div style="display:flex;gap:20px;font-size:14px;font-weight:500;flex-wrap:wrap">
+      <a href="Start Here.dc.html" style="color:#525252;padding:22px 0">Start here</a>
+      <a href="Guidelines.dc.html" style="color:#525252;padding:22px 0">Guidelines</a>
+      <a href="Palettes.dc.html" style="color:#525252;padding:22px 0">Palettes</a>
+      <a href="Chart Gallery.dc.html" style="color:#525252;padding:22px 0">Chart gallery</a>
+      <a href="Audit Kit.dc.html" style="color:#525252;padding:22px 0">Audit kit</a>
+      <a href="Swatch Sheet.dc.html" style="color:#525252;padding:22px 0">Swatch sheet</a>
+    </div>
+  </nav>
+
+  <header style="padding:48px 0 24px;max-width:860px">
+    <div style="display:flex;gap:10px;align-items:center">
+      <span style="font-size:13px;font-weight:600;color:#024AD8;letter-spacing:.04em;text-transform:uppercase">Decision · v1 release scope</span>
+      <span style="font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;background:#CBFCDE;color:#01633A">Decided · Option A</span>
+    </div>
+    <h1 style="font-size:40px;line-height:1.1;margin:10px 0 14px;font-weight:700;letter-spacing:-.01em;text-wrap:pretty">Release four palettes, not seven.</h1>
+    <p style="font-size:16px;line-height:1.55;color:#525252;margin:0;text-wrap:pretty">Each palette is one more decision a designer or developer can get wrong. On a product that already has many charts, the risk is not missing a palette. The risk is two teams choosing different palettes for the same data. This page shows how often each palette is the right answer and records what v1 ships: option A.</p>
+  </header>
+
+  <section style="margin-top:12px">
+    <h2 style="font-size:22px;margin:0 0 6px;font-weight:700">How often each palette is the right answer</h2>
+    <p style="margin:0 0 16px;color:#525252;font-size:14px;line-height:1.5;max-width:760px;text-wrap:pretty">Counted from the <a href="Chart Gallery.dc.html">Chart gallery</a> fit matrix across the ten chart types. Green means recommended, amber means use with care, red means avoid.</p>
+    <div style="background:#fff;border:1px solid #E4EEFA;border-radius:12px;overflow:hidden">
+      <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,.8fr) minmax(0,2.4fr);gap:16px;padding:10px 20px;background:#F5F5F5;font-size:12px;font-weight:600;color:#525252">
+        <div>Palette</div><div>Fit across 10 charts</div><div>v1 status</div><div>Why</div>
+      </div>
+      <sc-for list="{{ rows }}" as="r" hint-placeholder-count="7">
+        <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,.8fr) minmax(0,2.4fr);gap:16px;padding:14px 20px;border-top:1px solid #F0F0F0;align-items:start;font-size:14px">
+          <div style="display:grid;gap:8px">
+            <div style="font-weight:700">{{ r.label }}</div>
+            <div style="display:flex;gap:2px">
+              <sc-for list="{{ r.swatch }}" as="h" hint-placeholder-count="5"><span style="flex:1;height:8px;border-radius:2px;background: {{ h.hex }}"></span></sc-for>
+            </div>
+          </div>
+          <div style="display:grid;gap:6px">
+            <div style="display:flex;gap:3px">
+              <sc-for list="{{ r.fits }}" as="f" hint-placeholder-count="10"><span title="{{ f.title }}" style="width:10px;height:10px;border-radius:50%;background: {{ f.dot }}"></span></sc-for>
+            </div>
+            <div style="font-size:12px;color:#636363">{{ r.goodText }}</div>
+          </div>
+          <div><span style="display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;background: {{ r.bg }};color: {{ r.fg }}">{{ r.verdict }}</span></div>
+          <div style="display:grid;gap:4px;color:#3D3D3D;line-height:1.5;text-wrap:pretty">
+            <div>{{ r.why }}</div>
+            <div style="color:#636363;font-size:13px"><b style="color:#3D3D3D">Instead:</b> {{ r.instead }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="margin-top:40px">
+    <h2 style="font-size:22px;margin:0 0 6px;font-weight:700">Three ways to scope v1</h2>
+    <p style="margin:0 0 16px;color:#525252;font-size:14px;line-height:1.5;max-width:760px">Tokens for everything stay in <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">dataviz.tokens.json</span>. The options differ only in what the guide lists as a choice.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px">
+      <sc-for list="{{ options }}" as="o" hint-placeholder-count="3">
+        <div style="background:#fff;border-radius:14px;padding:20px 22px;display:grid;gap:12px;align-content:start;border:2px solid {{ o.border }}">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+            <div style="font-size:12px;font-weight:700;color:#525252;letter-spacing:.04em">OPTION {{ o.id }}</div>
+            <sc-if value="{{ o.rec }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;background:#CBFCDE;color:#01633A">Chosen</span></sc-if>
+          </div>
+          <div style="font-size:18px;font-weight:700;line-height:1.25">{{ o.title }}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px">
+            <sc-for list="{{ o.chips }}" as="c" hint-placeholder-count="4"><span style="font-size:12px;font-weight:600;padding:3px 9px;border-radius:6px;background: {{ c.bg }};color: {{ c.fg }}">{{ c.label }}</span></sc-for>
+          </div>
+          <div style="font-size:14px;line-height:1.5;color:#3D3D3D;text-wrap:pretty"><b style="color:#1A1A1A">Gain.</b> {{ o.gain }}</div>
+          <div style="font-size:14px;line-height:1.5;color:#3D3D3D;text-wrap:pretty"><b style="color:#1A1A1A">Risk.</b> {{ o.risk }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="margin-top:40px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px">
+    <div style="background:#fff;border:1px solid #E4EEFA;border-radius:14px;padding:20px 22px;font-size:14px;line-height:1.55;color:#3D3D3D">
+      <div style="font-weight:700;color:#1A1A1A;font-size:16px;margin-bottom:8px">What changed with option A</div>
+      <ul style="margin:0;padding-left:18px;display:grid;gap:6px">
+        <li><b>Guidelines</b>: the “what does color encode?” cards drop from eight to five: four palettes plus the emphasis technique.</li>
+        <li><b>Palettes</b>: Multi-hue and Heatmap severity move to a collapsed “Held” section with the reason.</li>
+        <li><b>Chart gallery</b>: pickers show the four palettes and Emphasis. Held palettes appear only in the fit matrix.</li>
+        <li><b>tokens.json</b>: held tokens get <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">"$extensions": {"status": "held"}</span> so linting can flag them.</li>
+        <li><b>Audit kit</b>: any chart using the heat ramp for named states is logged as <i>major</i> and migrated to status tokens.</li>
+      </ul>
+    </div>
+    <div style="background:#fff;border:1px solid #E4EEFA;border-radius:14px;padding:20px 22px;font-size:14px;line-height:1.55;color:#3D3D3D">
+      <div style="font-weight:700;color:#1A1A1A;font-size:16px;margin-bottom:8px">How a held palette comes back</div>
+      <ol style="margin:0;padding-left:18px;display:grid;gap:6px">
+        <li>A team logs the chart in the <a href="Audit Kit.dc.html#registry">metric registry</a> with the four core palettes tried and why they fail.</li>
+        <li>The design owner reviews it against the gallery fit matrix.</li>
+        <li>If approved, the palette is released for that metric only. It becomes general after three approved metrics.</li>
+      </ol>
+      <div style="margin-top:10px;color:#636363">This keeps additions tied to real data, not to taste.</div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const G = '#027D4B', O = '#D86102', B = '#C92B28';
+    const charts = ['Line', 'Column', 'Bar', 'Stacked 100%', 'Area', 'Donut', 'Scatter', 'Heatmap', 'Treemap', 'Gauge'];
+    const fit = s => s.split('').map((c, i) => ({ dot: c === 'g' ? G : c === 'o' ? O : B, title: charts[i] + ': ' + (c === 'g' ? 'recommended' : c === 'o' ? 'use with care' : 'avoid') }));
+    const V = { core: ['Core', '#CBFCDE', '#01633A'], gated: ['Core · gated', '#E4EEFA', '#0E3191'], tech: ['Technique', '#F0E7FF', '#381A76'], hold: ['Hold', '#FFE9D9', '#602700'], fold: ['Fold into Status', '#FFE5E0', '#921A19'] };
+    const P = [
+      ['Categorical', ['#3363D2', '#D07B48', '#10918C', '#A24496', '#6F8D19'], 'ggoggggbgb', 'core', 'The default for unordered groups: OS, app, team, region. Seven of ten charts depend on it.', 'Nothing. This is the baseline.'],
+      ['Status', ['#9B1741', '#C92B28', '#D86102', '#BA7E15', '#027D4B', '#858585'], 'gggggggggg', 'core', 'Fits every chart type and shares its meaning with status chips in the UI. It is the palette most worth getting consistent.', 'Nothing. This is the baseline.'],
+      ['Sequential', ['#E0ECFE', '#96C0FE', '#5492EC', '#0162D4', '#003E8C'], 'oggggooggo', 'core', 'One quantity from low to high: bins, counts, heatmap volume.', 'Nothing. The 7-step ramp covers dense grids.'],
+      ['Diverging', ['#0048A0', '#87ADE4', '#DFE1E5', '#DB9F76', '#8E4208'], 'ooggbboggo', 'gated', 'Needed for change versus a target, but it is only right when the data has a real midpoint. Every use must name that midpoint in the registry.', 'Status, when the direction is judged as better or worse.'],
+      ['Emphasis', ['#858585', '#858585', '#3363D2', '#858585', '#C2C2C2'], 'gggooggbog', 'tech', 'This is not a set of hues. It is a rule: show one series in primary and the rest in muted. It works on top of any chart.', 'Keep the tokens, and teach it as a technique in Guidelines.'],
+      ['Multi-hue', ['#202268', '#093DA1', '#006C97', '#37B880', '#FAE770'], 'ooooooogob', 'hold', 'Only recommended for one chart type (dense heatmaps). Its colors also clash with categorical hues if both appear on one dashboard.', 'Sequential 7-step. Re-open with a registry request.'],
+      ['Heatmap severity', ['#F5C25F', '#E78B30', '#D44F13', '#AC172B', '#771142'], 'booobbbggo', 'fold', 'It shows the same meaning as status (worse to critical) with different reds. Two reds for “bad” is exactly the inconsistency this audit is trying to remove.', 'Status critical → low as heatmap classes. The gallery already renders this.'],
+    ];
+    const rows = P.map(([label, sw, f, v, why, instead]) => { const g = f.split('').filter(c => c === 'g').length;
+      return { label, swatch: sw.map(hex => ({ hex })), fits: fit(f), goodText: g + ' of 10 recommended', verdict: V[v][0], bg: V[v][1], fg: V[v][2], why, instead }; });
+    const chip = (label, k) => ({ label, bg: V[k][1], fg: V[k][2] });
+    const options = [
+      { id: 'A', rec: true, border: '#024AD8', title: 'Core four, with emphasis as a technique', chips: [chip('Categorical', 'core'), chip('Status', 'core'), chip('Sequential', 'core'), chip('Diverging', 'gated'), chip('Emphasis', 'tech')],
+        gain: 'Covers every chart in the gallery. Answering “what does color mean?” leads to exactly one palette. Held palettes still have tokens if a real case appears.', risk: 'Diverging can still be misused for judged change. The registry’s midpoint field is the safeguard.' },
+      { id: 'B', rec: false, border: '#E4EEFA', title: 'Leanest: three palettes', chips: [chip('Categorical', 'core'), chip('Status', 'core'), chip('Sequential', 'core')],
+        gain: 'Easiest to teach and to audit. Almost no room to choose the wrong palette.', risk: 'Change-versus-target charts have no home, so teams will reach for status red and green, which is the most common misuse.' },
+      { id: 'C', rec: false, border: '#E4EEFA', title: 'All seven, tiered', chips: [chip('Core 4', 'core'), chip('Specialist 3', 'hold')],
+        gain: 'Nothing is withdrawn. Specialists are available for edge cases.', risk: '“Specialist” palettes tend to become defaults. Each one needs review, and the heat and status reds will compete.' },
+    ];
+    return { rows, options };
+  }
+}
+</script>
+</body>
+</html>
